@@ -1,0 +1,12 @@
+Dataset,Validation Type,Check,Status,Details
+TRAIN,Schema,"Column ""cycle"" exists",✓ PASS,Column type: int64
+TRAIN,Schema,"Column ""id"" exists",✓ PASS,Column type: int64
+TRAIN,Schema,"Column ""RUL"" exists",✓ PASS,Column type: int64
+VAL,Schema,"Column ""cycle"" exists",✓ PASS,Column type: int64
+VAL,Schema,"Column ""id"" exists",✓ PASS,Column type: int64
+VAL,Schema,"Column ""RUL"" exists",✓ PASS,Column type: int64
+TRAIN,Business Rule,RUL monotonically decreases per engine,✓ PASS,Sampled 5 engines - All decrease monotonically: True
+TRAIN,Business Rule,"RUL in range [0, 125]",✓ PASS,"Min: 0, Max: 125"
+TRAIN+VAL,Leakage Check,No engine overlap between splits,✓ PASS,Overlapping engines: None
+TEST,Schema Consistency,TEST has all TRAIN features (excluding RUL),✓ PASS,Missing features: None
+TRAIN,Data Integrity,Cycles continuous per engine (no gaps),✓ PASS,Sample engine 1: Continuous=True

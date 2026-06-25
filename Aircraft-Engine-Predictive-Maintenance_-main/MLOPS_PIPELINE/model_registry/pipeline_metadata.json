@@ -1,0 +1,31 @@
+{
+    "pipeline_version": "v2",
+    "created_at": "2026-06-25 15:57:14",
+    "model": "XGBoost Tuned",
+    "model_file": "best_model.pkl",
+    "scaler_file": "scaler.pkl",
+    "feature_file": "feature_columns.pkl",
+    "feature_count": 95,
+    "RUL_clip_range": [
+        0,
+        125
+    ],
+    "val_RMSE": 17.398,
+    "val_MAE": 12.2433,
+    "val_R2": 0.8259,
+    "input_modes": {
+        "predict_rul_raw": "Use for raw unscaled sensor input",
+        "predict_rul_scaled": "Use for feature store scaled input"
+    },
+    "pipeline_steps_raw": [
+        "1. Select 95 engineered feature columns",
+        "2. Scale using StandardScaler (fitted on train only)",
+        "3. Predict RUL using XGBoost Tuned",
+        "4. Clip predictions to valid range [0, 125]"
+    ],
+    "pipeline_steps_scaled": [
+        "1. Select 95 engineered feature columns",
+        "2. Predict RUL using XGBoost Tuned (skip scaling)",
+        "3. Clip predictions to valid range [0, 125]"
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    "created_at": "2026-06-25 15:46:14",
+    "best_model": "XGBoost Tuned",
+    "run_id": "run_004",
+    "criteria_evaluation": {
+        "RMSE": {
+            "threshold": 20.0,
+            "achieved": 17.4496,
+            "passed": true,
+            "margin": 2.5504
+        },
+        "R2": {
+            "threshold": 0.75,
+            "achieved": 0.8248,
+            "passed": true,
+            "margin": 0.0748
+        }
+    },
+    "decision": "YES \u2014 Performance is sufficient",
+    "next_step": "Proceed to Analytical Pipeline Development",
+    "justification": "XGBoost Tuned achieves RMSE=17.4496 (below threshold of 20.0) and R2=0.8248 (above threshold of 0.75). All four models passed both criteria. The best model demonstrates sufficient predictive power to reliably estimate RUL for aircraft engines. No further experiments or data modifications are required."
+}

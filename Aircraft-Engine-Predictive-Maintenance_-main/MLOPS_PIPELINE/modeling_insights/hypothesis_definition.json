@@ -1,0 +1,30 @@
+[
+    {
+        "id": "H1",
+        "statement": "XGBoost will outperform Linear Regression because aircraft engine degradation follows non-linear patterns that tree-based models can capture better than a linear model.",
+        "reason": "Linear Regression assumes a straight-line relationship between sensors and RUL. Engine wear is known to be non-linear and progressive \u2014 tree models handle this naturally.",
+        "metric": "Validation RMSE",
+        "expected": "XGBoost RMSE < Linear Regression RMSE"
+    },
+    {
+        "id": "H2",
+        "statement": "Rolling window features (mean and std) will improve model performance compared to using raw sensor readings alone.",
+        "reason": "Single sensor readings contain noise. Rolling averages smooth noise and reveal true degradation trends. Rolling std captures engine instability as failure approaches.",
+        "metric": "Validation RMSE",
+        "expected": "Models with rolling features will have lower RMSE"
+    },
+    {
+        "id": "H3",
+        "statement": "Hyperparameter tuning of XGBoost will further reduce validation RMSE compared to the default XGBoost configuration.",
+        "reason": "Default hyperparameters are generic. Tuning learning rate, depth, subsample and regularization for this specific dataset should improve generalization.",
+        "metric": "Validation RMSE",
+        "expected": "XGBoost Tuned RMSE < XGBoost Default RMSE"
+    },
+    {
+        "id": "H4",
+        "statement": "Engine-wise train/validation split will produce reliable generalization estimates because unseen engines are the real deployment scenario.",
+        "reason": "Splitting by engine ID ensures no engine appears in both train and validation sets. This prevents leakage and simulates real deployment where entirely new engines are predicted.",
+        "metric": "Train vs Validation RMSE gap",
+        "expected": "Small gap confirms no leakage"
+    }
+]

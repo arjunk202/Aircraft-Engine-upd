@@ -1,0 +1,21 @@
+Feature,Data Type,Role,Description,Valid Range,Unit,Source
+id,int,Engine ID,Unique engine identifier,1-100,N/A,Raw data
+cycle,int,Time series index,Operating cycle number,1-350,cycles,Raw data
+setting1,float,Operating setting,Engine operating condition 1,varies,normalized,Raw data
+setting2,float,Operating setting,Engine operating condition 2,varies,normalized,Raw data
+s2,float,Sensor measurement,Sensor 2 reading (physical degradation proxy),varies,normalized,Raw data
+s3,float,Sensor measurement,Sensor 3 reading (physical degradation proxy),varies,normalized,Raw data
+s4,float,Sensor measurement,Sensor 4 reading (physical degradation proxy),varies,normalized,Raw data
+s5,float,Sensor measurement,Sensor 5 reading (physical degradation proxy),varies,normalized,Raw data
+s7,float,Sensor measurement,Sensor 7 reading (physical degradation proxy),varies,normalized,Raw data
+s8,float,Sensor measurement,Sensor 8 reading (physical degradation proxy),varies,normalized,Raw data
+s9,float,Sensor measurement,Sensor 9 reading (physical degradation proxy),varies,normalized,Raw data
+s11,float,Sensor measurement,Sensor 11 reading (physical degradation proxy),varies,normalized,Raw data
+s12,float,Sensor measurement,Sensor 12 reading (physical degradation proxy),varies,normalized,Raw data
+s13,float,Sensor measurement,Sensor 13 reading (physical degradation proxy),varies,normalized,Raw data
+s14,float,Sensor measurement,Sensor 14 reading (physical degradation proxy),varies,normalized,Raw data
+s15,float,Sensor measurement,Sensor 15 reading (physical degradation proxy),varies,normalized,Raw data
+s17,float,Sensor measurement,Sensor 17 reading (physical degradation proxy),varies,normalized,Raw data
+s20,float,Sensor measurement,Sensor 20 reading (physical degradation proxy),varies,normalized,Raw data
+s21,float,Sensor measurement,Sensor 21 reading (physical degradation proxy),varies,normalized,Raw data
+RUL,float,Target variable,Remaining Useful Life (capped at 125),0-125,cycles,Engineered

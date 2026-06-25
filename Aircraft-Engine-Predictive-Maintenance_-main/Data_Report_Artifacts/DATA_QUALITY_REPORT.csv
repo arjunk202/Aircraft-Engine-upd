@@ -1,0 +1,4 @@
+,Rows,Columns,Completeness (%),Missing Values,Duplicates,Duplicate Rate (%),Invalid Cycles,Invalid RUL (%),Unique Engines
+TRAIN,15259.0,98.0,100.0,0.0,0.0,0.0,0.0,0.0,80.0
+VAL,3472.0,98.0,100.0,0.0,0.0,0.0,0.0,0.0,20.0
+TEST,11196.0,97.0,100.0,0.0,0.0,0.0,0.0,0.0,100.0

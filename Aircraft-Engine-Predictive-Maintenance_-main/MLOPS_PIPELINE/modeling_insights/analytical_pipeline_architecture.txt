@@ -1,0 +1,133 @@
+
+ANALYTICAL PIPELINE ARCHITECTURE
+Aircraft Engine Predictive Maintenance (RUL Prediction)
+==========================================================
+
+INPUT LAYER
+-----------
+Raw Sensor Data (NASA C-MAPSS FD001)
+  - 21 sensors + 3 operational settings
+  - Multiple engines, multiple flight cycles
+
+        |
+        v
+
+STAGE 1 — DATA PIPELINE (stage1_cleaning.ipynb)
+------------------------------------------------
+[1] Data Loading & Validation
+    - Missing value check
+    - Duplicate check
+    - Data type validation
+    - Consistency checks (no negative RUL, valid IDs)
+
+[2] Feature Engineering
+    - RUL calculation (clipped at 125 cycles)
+    - Rolling mean (window=5, window=20)
+    - Rolling std  (window=5, window=20)
+    - Constant feature removal (s18, s19, setting3)
+    - Total features: 95
+
+[3] Engine-wise Split (no leakage)
+    - Train : 80 engines  (15,259 rows)
+    - Val   : 20 engines  ( 3,472 rows)
+    - Test  : 10 engines  (11,196 rows)
+
+        |
+        v
+
+FEATURE STORE
+-------------
+MLOPS_PIPELINE/feature_store/
+  - train_features.csv   (15259 x 95) scaled
+  - val_features.csv     ( 3472 x 95) scaled
+  - test_features.csv    (11196 x 95) scaled
+  - train_target.csv     (15259,)
+  - val_target.csv       ( 3472,)
+  - feature_columns.pkl  (95 feature names)
+  - feature_store_metadata.json
+
+        |
+        v
+
+STAGE 2 — ANALYTICAL MODELING (stage2_modeling.ipynb)
+-------------------------------------------------------
+[4] Scaling
+    - StandardScaler fitted on TRAIN only
+    - Applied to val and test (no leakage)
+    - Saved: model_registry/scaler.pkl
+
+[5] Model Development (4 models trained)
+    - run_001: Linear Regression  (baseline)
+    - run_002: Random Forest      (ensemble)
+    - run_003: XGBoost            (gradient boosting)
+    - run_004: XGBoost Tuned      (optimized) <- BEST
+
+[6] Model Assessment
+    - Primary metric  : RMSE
+    - Secondary       : MAE, R2
+    - Success criteria: RMSE <= 20.0, R2 >= 0.75
+    - All 4 models passed criteria
+
+[7] Performance Sufficiency Decision
+    - DECISION: YES
+    - Best model RMSE=17.3980, R2=0.8259
+
+        |
+        v
+
+MODEL REGISTRY
+--------------
+MLOPS_PIPELINE/model_registry/
+  - model_v1_linear_regression.pkl
+  - model_v2_random_forest.pkl
+  - model_v3_xgboost.pkl
+  - model_v4_xgboost_tuned.pkl
+  - best_model.pkl          <- XGBoost Tuned
+  - best_model_metadata.json
+  - scaler.pkl
+  - pipeline_metadata.json
+
+MODEL METADATA STORE
+--------------------
+MLOPS_PIPELINE/model_metadata_store/
+  - experiment_log.csv
+  - experiment_log.json
+  (4 runs logged: model, params, metrics, timestamp)
+
+        |
+        v
+
+ANALYTICAL PIPELINE (predict_rul_scaled / predict_rul_raw)
+----------------------------------------------------------
+Input  : 95 engineered + scaled sensor features
+Step 1 : Select 95 feature columns
+Step 2 : Scale if raw input (StandardScaler)
+Step 3 : Predict RUL (XGBoost Tuned)
+Step 4 : Clip predictions to [0, 125]
+Output : Predicted RUL per flight cycle
+
+        |
+        v
+
+OUTPUT LAYER
+------------
+  - test_predictions.csv (11196 predicted RUL values)
+  - Saved: MLOPS_PIPELINE/feature_store/test_predictions.csv
+
+        |
+        v
+
+INSIGHTS & DOCUMENTATION
+-------------------------
+MLOPS_PIPELINE/modeling_insights/
+  - hypothesis_definition.json
+  - test_design.json
+  - model_selection_rationale.json
+  - model_assessment_report.json
+  - performance_sufficiency_decision.json
+  - modeling_insights_inventory.md
+
+==========================================================
+PIPELINE STATUS : COMPLETE
+NEXT STAGE      : Evaluation
+==========================================================

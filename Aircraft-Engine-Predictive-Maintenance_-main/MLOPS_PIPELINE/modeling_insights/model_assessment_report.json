@@ -1,0 +1,66 @@
+{
+    "report_title": "Analytical Model Assessment Report",
+    "created_at": "2026-06-25 15:43:32",
+    "dataset_version": "stage1_v1",
+    "assessment_type": "Validation Set Evaluation",
+    "total_models_assessed": 4,
+    "results": [
+        {
+            "model": "Linear Regression",
+            "run_id": "run_001",
+            "val_RMSE": 19.6373,
+            "val_MAE": 15.9466,
+            "val_R2": 0.7782,
+            "train_RMSE": 18.4786,
+            "train_MAE": 15.0417,
+            "train_R2": 0.805,
+            "overfit_gap_RMSE": 1.1587,
+            "meets_RMSE_target": true,
+            "meets_R2_target": true,
+            "assessment": "Linear Regression meets both success criteria. Small train/validation gap confirms no overfitting. Underfitting is the main limitation \u2014 model cannot capture non-linear degradation patterns."
+        },
+        {
+            "model": "Random Forest",
+            "run_id": "run_002",
+            "val_RMSE": 18.4393,
+            "val_MAE": 13.0336,
+            "val_R2": 0.8044,
+            "train_RMSE": 5.1412,
+            "train_MAE": 3.5037,
+            "train_R2": 0.9849,
+            "overfit_gap_RMSE": 13.2981,
+            "meets_RMSE_target": true,
+            "meets_R2_target": true,
+            "assessment": "Random Forest meets both success criteria. However large train/validation RMSE gap of 13.30 indicates significant overfitting. Validation performance still improves over baseline."
+        },
+        {
+            "model": "XGBoost",
+            "run_id": "run_003",
+            "val_RMSE": 17.9456,
+            "val_MAE": 12.6944,
+            "val_R2": 0.8147,
+            "train_RMSE": 5.5247,
+            "train_MAE": 4.0301,
+            "train_R2": 0.9826,
+            "overfit_gap_RMSE": 12.4209,
+            "meets_RMSE_target": true,
+            "meets_R2_target": true,
+            "assessment": "XGBoost meets both success criteria and improves over Random Forest on validation RMSE. Built-in regularization slightly reduces overfitting gap compared to Random Forest."
+        },
+        {
+            "model": "XGBoost Tuned",
+            "run_id": "run_004",
+            "val_RMSE": 17.4496,
+            "val_MAE": 12.3685,
+            "val_R2": 0.8248,
+            "train_RMSE": null,
+            "train_MAE": null,
+            "train_R2": null,
+            "overfit_gap_RMSE": null,
+            "meets_RMSE_target": true,
+            "meets_R2_target": true,
+            "assessment": "XGBoost Tuned achieves the best validation RMSE and R2 among all models. Hyperparameter tuning successfully improved generalization. Both success criteria are met comfortably."
+        }
+    ],
+    "overall_conclusion": "All four models meet the defined success criteria (RMSE below 20.0 and R2 above 0.75). XGBoost Tuned is selected as the best model with validation RMSE=17.4496 and R2=0.8248. Model performance is considered sufficient to proceed to Analytical Pipeline Development."
+}

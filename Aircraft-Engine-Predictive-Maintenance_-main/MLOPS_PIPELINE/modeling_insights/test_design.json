@@ -1,0 +1,53 @@
+{
+    "test_design_version": "v1",
+    "created_at": "2026-06-25 15:39:19",
+    "evaluation_metrics": {
+        "primary": "RMSE (Root Mean Squared Error)",
+        "secondary": [
+            "MAE (Mean Absolute Error)",
+            "R2 Score (Explained Variance)"
+        ],
+        "reasoning": "RMSE penalizes large errors more heavily than MAE. In aviation, a large RUL prediction error is more dangerous than a small one \u2014 so RMSE is the right primary metric. MAE gives average error magnitude. R2 shows how much variance the model explains."
+    },
+    "dataset_split_strategy": {
+        "method": "Engine-wise split (GroupShuffleSplit)",
+        "train_engines": 80,
+        "val_engines": 20,
+        "test_engines": 10,
+        "reasoning": "Splitting by engine ID ensures no engine appears in both train and validation sets. Row-wise splitting would cause leakage as the same engine would appear in both train and test."
+    },
+    "models_to_test": [
+        {
+            "model": "LinearRegression",
+            "role": "Baseline",
+            "reason": "Establishes minimum acceptable performance benchmark"
+        },
+        {
+            "model": "RandomForest",
+            "role": "Ensemble baseline",
+            "reason": "Tests whether ensemble methods improve over linear baseline"
+        },
+        {
+            "model": "XGBoost",
+            "role": "Gradient boosting",
+            "reason": "Tests gradient boosting with built-in regularization"
+        },
+        {
+            "model": "XGBoost Tuned",
+            "role": "Optimized model",
+            "reason": "Tests whether hyperparameter tuning further improves performance"
+        }
+    ],
+    "success_criteria": {
+        "minimum_R2": 0.75,
+        "target_RMSE": 20.0,
+        "reasoning": "R2 above 0.75 indicates model explains at least 75 percent of RUL variance \u2014 acceptable for predictive maintenance. RMSE below 20 cycles means predictions are within 20 flight cycles of actual RUL \u2014 operationally acceptable for scheduling."
+    },
+    "leakage_prevention": [
+        "StandardScaler fitted on train only",
+        "Feature selection performed on train only",
+        "Engine-wise split prevents same engine in train and val",
+        "RUL not included as input feature",
+        "Engine ID not included as input feature"
+    ]
+}

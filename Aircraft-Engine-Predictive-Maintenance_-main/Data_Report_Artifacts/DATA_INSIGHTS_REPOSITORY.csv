@@ -1,0 +1,7 @@
+Category,Insight,Details,Implication
+Target Distribution,RUL follows degradation pattern,"Mean: 83.7cycles, Median: 95.0, Std: 41.8",Targets skewed toward earlier failures; regression suitable
+Engine Lifecycle,Engine lifetimes vary significantly,"Min: 128 cycles, Max: 362, Mean: 210",Heterogeneous failure modes; stratified splitting prevents leakage
+Feature Relationships,Top 5 correlated features,"s4_mean_5(0.823), s11_mean_5(0.823), s15_mean_5(0.816), s17_mean_20(0.814), s21_mean_5(0.813)",Strong signals exist; minimal feature selection needed
+Temporal Dynamics,Rolling features capture degradation trends,Windows 5 & 20 capture short & medium-term drift,Sensors degrade monotonically; history important for prediction
+Class Balance,Continuous target; no class imbalance,RUL distribution continuous [0-125],No resampling required; standard regression metrics apply
+Data Quality,Removed constant sensors,2 of 21 sensors removed (zero variance),Reduced dimensionality; improved model stability
