@@ -1,0 +1,24 @@
+{
+    "created_at": "2026-07-13 12:45:39",
+    "source": "NASA C-MAPSS dataset documentation + RUL literature",
+    "domain": "Aircraft Engine Health Management",
+    "key_insights": [
+        "Engine degradation is non-linear \u2014 rate accelerates near failure point",
+        "RUL clipped at 125 cycles reflects healthy operating phase with no degradation signal",
+        "Rolling window features capture degradation trends better than raw sensor readings",
+        "Sensors s18 and s19 contain no variance and carry no diagnostic information",
+        "Operational settings affect sensor baselines and must be included as features",
+        "C-MAPSS FD001 uses single operating condition \u2014 simplest subset for baseline modeling"
+    ],
+    "modeling_implications": [
+        "Non-linear degradation justifies use of tree-based models (RF, XGBoost) over Linear Regression",
+        "Rolling mean and std (windows 5 and 20) are standard RUL feature engineering choices",
+        "Engine-wise train/test split is mandatory \u2014 row-wise split would cause leakage",
+        "RMSE is preferred over MAE because large RUL errors are more dangerous in aviation",
+        "RUL predictions clipped to [0, 125] to reflect physically valid operating range"
+    ],
+    "references": [
+        "Saxena, A. et al. (2008). Damage propagation modeling for aircraft engine run-to-failure simulation. PHM 2008.",
+        "NASA C-MAPSS dataset \u2014 https://ti.arc.nasa.gov/tech/dash/groups/pcoe/prognostic-data-repository/"
+    ]
+}

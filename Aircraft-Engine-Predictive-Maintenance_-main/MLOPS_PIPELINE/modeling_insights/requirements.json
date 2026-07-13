@@ -1,0 +1,27 @@
+{
+    "created_at": "2026-07-13 12:45:07",
+    "project": "Aircraft Engine Predictive Maintenance (RUL Prediction)",
+    "dataset": "NASA C-MAPSS FD001",
+    "functional": [
+        "Predict Remaining Useful Life (RUL) for aircraft engines from sensor readings",
+        "Support batch inference on test engine data",
+        "Pipeline must load artifacts from Feature Store and Model Registry",
+        "Predictions must be saved as test_predictions.csv"
+    ],
+    "analytical": [
+        "Primary metric: RMSE <= 20 cycles on validation set",
+        "Secondary metric: R2 >= 0.75 on validation set",
+        "Secondary metric: MAE reported alongside RMSE",
+        "No data leakage between train and validation sets",
+        "Train/val/test split must be engine-wise (GroupShuffleSplit)",
+        "StandardScaler fitted on training data only"
+    ],
+    "non_functional": [
+        "Model must be serializable and reloadable as .pkl artifact",
+        "Pipeline must be fully reproducible from Feature Store CSVs",
+        "All experiments must be logged to Model Metadata Store",
+        "All artifacts must be versioned in Model Registry",
+        "Notebook must run end-to-end without manual intervention",
+        "All file paths must use MLOPS_PIPELINE/ base directory"
+    ]
+}

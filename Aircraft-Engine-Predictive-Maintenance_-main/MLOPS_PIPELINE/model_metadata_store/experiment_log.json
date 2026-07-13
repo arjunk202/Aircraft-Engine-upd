@@ -2,7 +2,7 @@
   {
     "run_id":"run_001",
     "model_name":"LinearRegression",
-    "timestamp":"2026-06-23 11:46:50",
+    "timestamp":"2026-07-13 12:36:15",
     "parameters":{
       "fit_intercept":true,
       "scaler":"StandardScaler"
@@ -18,7 +18,7 @@
   {
     "run_id":"run_002",
     "model_name":"RandomForest",
-    "timestamp":"2026-06-23 23:04:04",
+    "timestamp":"2026-07-13 12:36:49",
     "parameters":{
       "n_estimators":200,
       "max_depth":15,
@@ -37,7 +37,7 @@
   {
     "run_id":"run_003",
     "model_name":"XGBoost",
-    "timestamp":"2026-06-23 23:05:27",
+    "timestamp":"2026-07-13 12:37:00",
     "parameters":{
       "n_estimators":300,
       "max_depth":6,
@@ -59,7 +59,7 @@
   {
     "run_id":"run_004",
     "model_name":"XGBoost_Tuned",
-    "timestamp":"2026-06-23 23:12:02",
+    "timestamp":"2026-07-13 12:39:49",
     "parameters":{
       "n_estimators":800,
       "learning_rate":0.03,

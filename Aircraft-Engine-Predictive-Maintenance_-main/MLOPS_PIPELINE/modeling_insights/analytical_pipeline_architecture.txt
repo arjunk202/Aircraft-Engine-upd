@@ -68,7 +68,8 @@ STAGE 2 — ANALYTICAL MODELING (stage2_modeling.ipynb)
     - Success criteria: RMSE <= 20.0, R2 >= 0.75
     - All 4 models passed criteria
 
-[7] Performance Sufficiency Decision
+[7] Performance Sufficiency 
+
     - DECISION: YES
     - Best model RMSE=17.3980, R2=0.8259
 

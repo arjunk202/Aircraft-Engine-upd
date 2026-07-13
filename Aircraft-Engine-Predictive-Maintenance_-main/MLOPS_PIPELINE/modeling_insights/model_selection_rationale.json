@@ -1,5 +1,5 @@
 {
-    "created_at": "2026-06-25 15:41:09",
+    "created_at": "2026-07-13 12:39:50",
     "selection_approach": "Four models were selected covering a range from simple linear baseline to optimized gradient boosting. Each model adds complexity incrementally so improvements can be clearly attributed to model capability.",
     "models": [
         {
