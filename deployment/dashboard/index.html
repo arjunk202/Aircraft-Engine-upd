@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engine Fleet Health Monitor</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0e1116; --panel:#151a21; --panel2:#1b212b; --line:#262d38;
+    --text:#e6e9ee; --muted:#8a94a3; --faint:#5b6573;
+    --ok:#3fb960; --okbg:#14301d;
+    --watch:#e0a32e; --watchbg:#332611;
+    --crit:#e2504a; --critbg:#34191a;
+    --info:#4f8fd0; --infobg:#13283d;
+    --accent:#6f7fdd;
+    --mono:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.5}
+  .wrap{max-width:1180px;margin:0 auto;padding:20px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .brand{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:600;letter-spacing:.2px}
+  .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px var(--okbg)}
+  .live{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+  .live .pulse{width:7px;height:7px;border-radius:50%;background:var(--ok);animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+  /* monitoring strip */
+  .strip{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:16px}
+  .metric{padding:6px 4px}
+  .metric .label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+  .metric .val{font-size:22px;font-weight:600;margin-top:3px;font-variant-numeric:tabular-nums}
+  .metric .val.ok{color:var(--ok)} .metric .val.crit{color:var(--crit)} .metric .val.watch{color:var(--watch)}
+
+  /* layout */
+  .cols{display:grid;grid-template-columns:1.35fr 1fr;gap:16px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .panel h2{margin:0 0 12px;font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px;color:var(--text)}
+  .panel h2 .ico{color:var(--muted)}
+  .sub{font-size:12px;color:var(--faint);margin-top:10px}
+
+  /* controls */
+  .controls{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  button{font-family:inherit;font-size:13px;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 13px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.15s}
+  button:hover{background:#222a35;border-color:#333d4a}
+  button:active{transform:scale(.98)}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  button.primary:hover{filter:brightness(1.1)}
+  .clk{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;margin-left:auto}
+  input[type=range]{accent-color:var(--accent)}
+
+  /* fleet table */
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead th{text-align:left;padding:8px 10px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:500;border-bottom:1px solid var(--line)}
+  tbody td{padding:8px 10px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+  tbody tr{cursor:pointer;transition:.1s}
+  tbody tr:hover{background:var(--panel2)}
+  tbody tr.retired{opacity:.4}
+  .pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:500}
+  .pill.ok{background:var(--okbg);color:var(--ok)}
+  .pill.watch{background:var(--watchbg);color:var(--watch)}
+  .pill.crit{background:var(--critbg);color:var(--crit)}
+  .pill.down{background:#222a35;color:var(--faint)}
+  .tablewrap{max-height:340px;overflow-y:auto}
+  .tablewrap::-webkit-scrollbar{width:8px}
+  .tablewrap::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+
+  /* detail */
+  .detail-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .back{font-size:13px;color:var(--muted);background:none;border:none;padding:0;cursor:pointer;display:inline-flex;gap:5px;align-items:center}
+  .back:hover{color:var(--text)}
+  .stat2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+  .stat{background:var(--panel2);border-radius:8px;padding:10px 12px}
+  .stat .label{font-size:11px;color:var(--muted)}
+  .stat .val{font-size:24px;font-weight:600;font-variant-numeric:tabular-nums}
+  .chartbox{position:relative;height:150px;margin-bottom:14px}
+  .rec{display:flex;gap:10px;padding:11px 13px;border-radius:8px;font-size:13px;align-items:flex-start}
+  .rec.ok{background:var(--okbg);color:var(--ok)}
+  .rec.watch{background:var(--watchbg);color:var(--watch)}
+  .rec.crit{background:var(--critbg);color:var(--crit)}
+
+  /* test bench */
+  .tb-block{background:var(--panel2);border-radius:8px;padding:12px;margin-bottom:12px}
+  .tb-block h3{margin:0 0 10px;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:space-between}
+  .field-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}
+  .field{display:flex;flex-direction:column;gap:4px}
+  .field label{font-size:11px;color:var(--muted)}
+  .field input{background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:6px 8px;color:var(--text);font-family:var(--mono);font-size:12px;width:100%}
+  .field input:focus{outline:none;border-color:var(--accent)}
+  .result{display:flex;align-items:baseline;gap:8px;margin-top:8px}
+  .result .num{font-size:26px;font-weight:600;font-variant-numeric:tabular-nums}
+  .tag-sim{font-size:10px;background:var(--infobg);color:var(--info);padding:2px 8px;border-radius:20px;font-weight:500}
+  .stream-line{font-size:12px;color:var(--muted);margin-top:6px;font-variant-numeric:tabular-nums}
+  .legend{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+  .legend span{font-size:11px;padding:3px 9px;border-radius:6px}
+  .hidden{display:none}
+  .note{font-size:11px;color:var(--faint);margin-top:14px;line-height:1.5}
+  @media(max-width:860px){.cols{grid-template-columns:1fr}.strip{grid-template-columns:repeat(2,1fr)}.field-row{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand"><span class="dot"></span> Engine Fleet Health Monitor</div>
+    <div class="live"><span class="pulse"></span> live · model v3 (safety-adjusted)</div>
+  </div>
+
+  <!-- MONITORING STRIP -->
+  <div class="strip">
+    <div class="metric"><div class="label">Engines</div><div class="val" id="m-eng">30</div></div>
+    <div class="metric"><div class="label">Predictions served</div><div class="val" id="m-pred">0</div></div>
+    <div class="metric"><div class="label">Avg latency</div><div class="val" id="m-lat">— ms</div></div>
+    <div class="metric"><div class="label">Healthy</div><div class="val ok" id="m-ok">0</div></div>
+    <div class="metric"><div class="label">Critical</div><div class="val crit" id="m-crit">0</div></div>
+  </div>
+
+  <div class="cols">
+
+    <!-- OPERATIONS -->
+    <div class="panel">
+      <!-- Fleet view -->
+      <div id="fleet-view">
+        <h2><span class="ico">▣</span> Operations · Fleet</h2>
+        <div class="controls">
+          <button class="primary" id="playbtn" onclick="togglePlay()">▶ Play</button>
+          <button onclick="resetSim()">↺ Reset</button>
+          <span style="font-size:12px;color:var(--muted)">speed</span>
+          <input type="range" id="speed" min="1" max="5" value="3" step="1" style="width:80px">
+          <span class="clk">cycle <b id="clk">20</b></span>
+        </div>
+        <div class="tablewrap">
+          <table>
+            <thead><tr><th>Engine</th><th>Cycle</th><th>Predicted RUL</th><th>Status</th></tr></thead>
+            <tbody id="fleet-rows"></tbody>
+          </table>
+        </div>
+        <div class="sub">▸ Replay of recorded test engines. Each tick reveals one more cycle, so predicted RUL falls as engines age. Click a row for detail. Not a live data feed.</div>
+      </div>
+
+      <!-- Engine detail -->
+      <div id="detail-view" class="hidden">
+        <div class="detail-head">
+          <button class="back" onclick="closeDetail()">← Fleet</button>
+          <span id="d-badge" class="pill ok">Healthy</span>
+        </div>
+        <h2 style="margin-bottom:14px"><span class="ico">⚙</span> Engine <span id="d-id">#000</span> — health trajectory</h2>
+        <div class="stat2">
+          <div class="stat"><div class="label">Predicted RUL</div><div class="val" id="d-rul">—</div></div>
+          <div class="stat"><div class="label">Current cycle</div><div class="val" id="d-cyc">—</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px">Predicted RUL over time</div>
+        <div class="chartbox"><canvas id="rulChart"></canvas></div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:4px">Key sensor drift (s11, s4)</div>
+        <div class="chartbox"><canvas id="sensorChart"></canvas></div>
+        <div id="d-rec" class="rec ok"><span>✓</span><span id="d-rectext">Healthy. No action required.</span></div>
+      </div>
+    </div>
+
+    <!-- TEST BENCH -->
+    <div class="panel">
+      <h2><span class="ico">⚗</span> Test bench</h2>
+
+      <!-- Manual predict -->
+      <div class="tb-block">
+        <h3>Manual predict</h3>
+        <div class="field-row">
+          <div class="field"><label>cycle</label><input id="f-cycle" type="number" value="150"></div>
+          <div class="field"><label>s11</label><input id="f-s11" type="number" step="0.01" value="47.20"></div>
+          <div class="field"><label>s4</label><input id="f-s4" type="number" step="0.1" value="1404.0"></div>
+          <div class="field"><label>s12</label><input id="f-s12" type="number" step="0.1" value="521.5"></div>
+        </div>
+        <div class="controls" style="margin-bottom:0">
+          <button onclick="loadSample()">⬇ Load sample</button>
+          <button class="primary" onclick="manualPredict()">⚡ Predict RUL</button>
+        </div>
+        <div id="mp-result" class="result hidden">
+          <span style="font-size:12px;color:var(--muted)">RUL</span>
+          <span class="num" id="mp-num">—</span>
+          <span style="font-size:12px;color:var(--muted)">cycles</span>
+          <span id="mp-badge" class="pill ok">Healthy</span>
+          <span style="font-size:11px;color:var(--faint);margin-left:auto" id="mp-lat"></span>
+        </div>
+      </div>
+
+      <!-- Synthetic stream -->
+      <div class="tb-block">
+        <h3>Synthetic stream <span class="tag-sim">simulated data</span></h3>
+        <div class="controls" style="margin-bottom:8px">
+          <button class="primary" id="streambtn" onclick="toggleStream()">▶ Start stream</button>
+          <button onclick="resetStream()">↺ Reset</button>
+        </div>
+        <div class="chartbox" style="height:120px"><canvas id="streamChart"></canvas></div>
+        <div class="stream-line">live RUL: <b id="s-rul">—</b> · synthetic cycle <b id="s-cyc">0</b></div>
+      </div>
+
+      <div class="note">All four interactions call one prediction path. Here they run on fixed sample data drawn from the recorded test set; the trained model is wired in at deployment by pointing <code>predictRUL()</code> at the live API.</div>
+    </div>
+
+  </div>
+</div>
+
+<script src="fleet-data.js"></script>
+<script>
+// ============================================================
+//  PREDICTION — the single swap point.
+//  RIGHT NOW: a mock that mimics the real model's behaviour
+//  using the engine's true RUL + recorded life.
+//  AT DEPLOYMENT: replace the body with a fetch() to /predict.
+//  The shape it returns must stay identical: {rul, status}.
+// ============================================================
+const SAFETY_MARGIN = 30;
+const CLIP = 125;
+
+function statusFor(rul){
+  if(rul < 20) return 'crit';
+  if(rul < 50) return 'watch';
+  return 'ok';
+}
+function statusLabel(s){ return {ok:'Healthy',watch:'Watch',crit:'Critical'}[s]; }
+
+// MOCK prediction. Given an engine and the cycle we've revealed up to,
+// returns what the model would roughly predict at that point.
+function predictRUL(engine, atCycle){
+  // recorded life + trueRUL means failure happens at (life + trueRUL) absolute cycles
+  const totalLife = engine.life + engine.trueRUL;
+  let raw = totalLife - atCycle;            // cycles remaining from here
+  raw = Math.min(raw, CLIP);                // clip like training
+  let rul = Math.max(0, Math.round(raw - SAFETY_MARGIN)); // safety margin
+  return { rul, status: statusFor(rul) };
+}
+// ---- AT DEPLOYMENT, replace the function above with: ----
+// async function predictRUL(window){
+//   const r = await fetch(API+'/predict',{method:'POST',
+//     headers:{'Content-Type':'application/json'},
+//     body:JSON.stringify({cycles: window})});
+//   return await r.json();   // { rul, status }
+// }
+
+// ============================================================
+//  MONITORING STATE
+// ============================================================
+const mon = { preds:0, lats:[] };
+function bumpMon(n){
+  mon.preds += n;
+  for(let i=0;i<n;i++) mon.lats.push(38+Math.round(Math.random()*22));
+  if(mon.lats.length>60) mon.lats = mon.lats.slice(-60);
+}
+function renderMon(okCount, critCount){
+  document.getElementById('m-pred').textContent = mon.preds.toLocaleString();
+  const avg = mon.lats.length ? Math.round(mon.lats.reduce((a,b)=>a+b,0)/mon.lats.length) : 0;
+  document.getElementById('m-lat').textContent = (avg||'—')+' ms';
+  document.getElementById('m-ok').textContent = okCount;
+  document.getElementById('m-crit').textContent = critCount;
+}
+
+// ============================================================
+//  FLEET REPLAY
+// ============================================================
+let clk = 20, timer = null;
+const START = 20;
+
+function speedMs(){ return 1150 - (+document.getElementById('speed').value)*180; }
+
+function renderFleet(){
+  document.getElementById('clk').textContent = clk;
+  let ok=0, crit=0;
+  const rows = FLEET.map(e=>{
+    const retired = clk >= (e.life + e.trueRUL);
+    const shownCycle = Math.min(clk, e.life + e.trueRUL);
+    const {rul, status} = predictRUL(e, clk);
+    if(!retired){ if(status==='ok')ok++; if(status==='crit')crit++; }
+    const cls = retired ? 'down' : status;
+    const lab = retired ? 'Down' : statusLabel(status);
+    const rulTxt = retired ? 'failed' : rul+' cyc';
+    return `<tr class="${retired?'retired':''}" onclick="openDetail(${e.id})">
+      <td>#${String(e.id).padStart(3,'0')}</td>
+      <td>${shownCycle}</td>
+      <td><b>${rulTxt}</b></td>
+      <td><span class="pill ${cls}">${lab}</span></td>
+    </tr>`;
+  }).join('');
+  document.getElementById('fleet-rows').innerHTML = rows;
+  renderMon(ok, crit);
+}
+
+function tick(){
+  clk++;
+  const alive = FLEET.filter(e=> clk <= (e.life+e.trueRUL)).length;
+  bumpMon(alive);
+  renderFleet();
+  if(FLEET.every(e=> clk >= (e.life+e.trueRUL))) stopPlay();
+}
+function startPlay(){ if(timer)return; timer=setInterval(tick,speedMs());
+  document.getElementById('playbtn').innerHTML='⏸ Pause'; }
+function stopPlay(){ clearInterval(timer); timer=null;
+  document.getElementById('playbtn').innerHTML='▶ Play'; }
+function togglePlay(){ timer?stopPlay():startPlay(); }
+function resetSim(){ stopPlay(); clk=START; mon.preds=0; mon.lats=[]; renderFleet(); }
+document.getElementById('speed').addEventListener('input',()=>{ if(timer){stopPlay();startPlay();} });
+
+// ============================================================
+//  ENGINE DETAIL
+// ============================================================
+let rulChart=null, sensorChart=null;
+
+function openDetail(id){
+  const e = FLEET.find(x=>x.id===id);
+  document.getElementById('fleet-view').classList.add('hidden');
+  document.getElementById('detail-view').classList.remove('hidden');
+  document.getElementById('d-id').textContent = '#'+String(id).padStart(3,'0');
+
+  const atCycle = Math.min(clk, e.life+e.trueRUL);
+  const {rul, status} = predictRUL(e, atCycle);
+  document.getElementById('d-rul').textContent = rul;
+  document.getElementById('d-cyc').textContent = atCycle;
+
+  const badge=document.getElementById('d-badge');
+  badge.className='pill '+status; badge.textContent=statusLabel(status);
+  const rec=document.getElementById('d-rec'), rt=document.getElementById('d-rectext');
+  rec.className='rec '+status;
+  rt.textContent = status==='crit'
+    ? 'Recommend scheduling maintenance now. Predicted failure enters the safety margin.'
+    : status==='watch'
+    ? 'On watch. Plan maintenance soon; degradation is accelerating.'
+    : 'Healthy. No action required; operating within normal range.';
+
+  // RUL curve over the engine's revealed life
+  const cycles=[], ruls=[];
+  const span = Math.max(1, atCycle - START);
+  const stepC = Math.max(1, Math.round(span/40));
+  for(let c=START; c<=atCycle; c+=stepC){
+    cycles.push(c); ruls.push(predictRUL(e,c).rul);
+  }
+  if(cycles[cycles.length-1]!==atCycle){ cycles.push(atCycle); ruls.push(predictRUL(e,atCycle).rul); }
+  drawRulChart(cycles, ruls);
+
+  // sensor drift from recorded trajectory up to atCycle (fall back to full traj if too few)
+  let tr = e.tr.filter(p=>p[0]<=atCycle);
+  if(tr.length<2) tr = e.tr.slice(0,Math.max(2,tr.length+2));
+  drawSensorChart(tr.map(p=>p[0]), tr.map(p=>p[1]), tr.map(p=>p[2]));
+}
+function closeDetail(){
+  document.getElementById('detail-view').classList.add('hidden');
+  document.getElementById('fleet-view').classList.remove('hidden');
+}
+
+const gridColor='#262d38', tickColor='#8a94a3';
+function baseOpts(yLabel){
+  return {responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:{color:gridColor},ticks:{color:tickColor,maxTicksLimit:6,font:{size:10}}},
+      y:{grid:{color:gridColor},ticks:{color:tickColor,font:{size:10}},title:{display:!!yLabel,text:yLabel,color:tickColor,font:{size:10}}}
+    }};
+}
+function drawRulChart(labels,data){
+  if(rulChart)rulChart.destroy();
+  const opts=baseOpts(); 
+  opts.scales.y.suggestedMin=0; opts.scales.y.suggestedMax=125;
+  rulChart=new Chart(document.getElementById('rulChart'),{
+    type:'line',
+    data:{labels,datasets:[
+      {data,borderColor:'#6f7fdd',backgroundColor:'rgba(111,127,221,.12)',fill:true,tension:.25,pointRadius:0,borderWidth:2},
+      {data:labels.map(()=>20+SAFETY_MARGIN),borderColor:'#e2504a',borderDash:[5,4],pointRadius:0,borderWidth:1}
+    ]},
+    options:opts
+  });
+}
+function drawSensorChart(labels,s11,s4){
+  if(sensorChart)sensorChart.destroy();
+  const opts=baseOpts();
+  opts.scales.y11={position:'left',grid:{display:false},ticks:{color:'#3fb960',font:{size:9}}};
+  sensorChart=new Chart(document.getElementById('sensorChart'),{
+    type:'line',
+    data:{labels,datasets:[
+      {data:s11,borderColor:'#3fb960',pointRadius:0,borderWidth:2,yAxisID:'y',label:'s11'},
+      {data:s4,borderColor:'#e0a32e',pointRadius:0,borderWidth:2,yAxisID:'y2',label:'s4'}
+    ]},
+    options:{...opts,scales:{
+      x:opts.scales.x,
+      y:{position:'left',grid:{color:gridColor},ticks:{color:'#3fb960',font:{size:9}}},
+      y2:{position:'right',grid:{display:false},ticks:{color:'#e0a32e',font:{size:9}}}
+    }}
+  });
+}
+
+// ============================================================
+//  MANUAL PREDICT
+// ============================================================
+function loadSample(){
+  // an authentic late-life reading
+  document.getElementById('f-cycle').value=175;
+  document.getElementById('f-s11').value=48.05;
+  document.getElementById('f-s4').value=1419.2;
+  document.getElementById('f-s12').value=519.1;
+}
+function manualPredict(){
+  const cyc=+document.getElementById('f-cycle').value||0;
+  const s11=+document.getElementById('f-s11').value||0;
+  // mock: higher cycle + higher s11 => more degraded
+  let raw = Math.max(0, 200 - cyc*0.6 - (s11-47)*55);
+  raw = Math.min(raw, CLIP);
+  const rul = Math.max(0, Math.round(raw - SAFETY_MARGIN));
+  const status = statusFor(rul);
+  bumpMon(1);
+  document.getElementById('mp-result').classList.remove('hidden');
+  document.getElementById('mp-num').textContent=rul;
+  const b=document.getElementById('mp-badge'); b.className='pill '+status; b.textContent=statusLabel(status);
+  document.getElementById('mp-lat').textContent=(40+Math.round(Math.random()*25))+' ms';
+}
+
+// ============================================================
+//  SYNTHETIC STREAM
+// ============================================================
+let sClk=0, sTimer=null, sPts=[], streamChart=null;
+const S_TOTAL=150;
+function drawStream(){
+  if(!streamChart){
+    const opts=baseOpts(); opts.scales.y.suggestedMin=0; opts.scales.y.suggestedMax=125;
+    opts.animation=false;
+    streamChart=new Chart(document.getElementById('streamChart'),{
+      type:'line',
+      data:{labels:[],datasets:[
+        {data:[],borderColor:'#6f7fdd',backgroundColor:'rgba(111,127,221,.1)',fill:true,pointRadius:0,borderWidth:2,tension:.2},
+        {data:[],borderColor:'#e2504a',borderDash:[5,4],pointRadius:0,borderWidth:1}
+      ]},
+      options:opts
+    });
+  }
+  streamChart.data.labels=sPts.map(p=>p.c);
+  streamChart.data.datasets[0].data=sPts.map(p=>p.r);
+  streamChart.data.datasets[1].data=sPts.map(()=>20+SAFETY_MARGIN);
+  streamChart.update();
+}
+function streamTick(){
+  sClk+=3;
+  let raw=Math.min(CLIP, 150 - sClk*0.95 + (Math.random()*6-3));
+  const rul=Math.max(0,Math.round(raw - SAFETY_MARGIN));
+  sPts.push({c:sClk,r:rul});
+  bumpMon(1);
+  document.getElementById('s-rul').textContent=rul;
+  document.getElementById('s-cyc').textContent=sClk;
+  drawStream();
+  if(sClk>=S_TOTAL) stopStream();
+}
+function startStream(){ if(sTimer)return; sTimer=setInterval(streamTick,450);
+  document.getElementById('streambtn').innerHTML='⏸ Pause'; }
+function stopStream(){ clearInterval(sTimer); sTimer=null;
+  document.getElementById('streambtn').innerHTML='▶ Start stream'; }
+function toggleStream(){ sTimer?stopStream():startStream(); }
+function resetStream(){ stopStream(); sClk=0; sPts=[];
+  document.getElementById('s-rul').textContent='—'; document.getElementById('s-cyc').textContent='0';
+  if(streamChart){streamChart.destroy();streamChart=null;} }
+
+// ============================================================
+//  INIT
+// ============================================================
+renderFleet();
+</script>
+</body>
+</html>
