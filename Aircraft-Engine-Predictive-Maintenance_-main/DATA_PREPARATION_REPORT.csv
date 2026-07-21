@@ -1,0 +1,10 @@
+Step,Activity,Description,Input Records,Output Records,Rationale
+1,Data Loading,"Loaded raw CSV files (pm_train, pm_test, pm_truth)","Train: 20,631 | Test: 13,096 | Truth: 100","Train: 20,631 | Test: 13,096",Initial data ingestion for exploration
+2,Missing Value Check,Checked for null/NaN values across all datasets,"20,631","20,631 (no missing values found)",Ensure data completeness; no imputation needed
+3,Duplicate Removal,"Identified and reported duplicates by (id, cycle)","20,631","20,631 (no duplicates found)",Prevent data leakage from repeated observations
+4,Constant Feature Removal,"Removed features with zero variance (s6, s10, s16, s18, s19)","20,631","20,631 (5 features dropped)",Constant features provide no predictive signal; reduce dimensionality
+5,RUL Calculation,Engineered target: RUL = max_cycle(engine_id) - current_cycle,"20,631","20,631 (with RUL)",Create regression target for remaining useful life prediction
+6,RUL Clipping,Capped RUL at 125 cycles (aviation standard),"20,631 (max RUL: 192)","20,631 (max RUL: 125)","Focus on degradation phase; healthy engines (RUL>125) are ""safe"""
+7,Train/Val Split,"Stratified split by engine_id (20% validation, 80% training)","20,631 (100 unique engines)","Train: 16,493 (80 engines) | Val: 4,138 (20 engines)",Prevent data leakage; no engine appears in both splits
+8,Feature Engineering,"Added rolling mean/std (windows: 5, 20) for all sensors","Train: 16,493 | Val: 4,138","Train: 16,489 | Val: 4,134 (after NaN removal)",Capture temporal patterns; rolling window = no future leakage
+9,NaN Handling,Dropped rows with NaN from rolling features (early cycles),"Train: 16,493 | Val: 4,138","Train: 16,489 | Val: 4,134",Early engine cycles lack sufficient history for full rolling window

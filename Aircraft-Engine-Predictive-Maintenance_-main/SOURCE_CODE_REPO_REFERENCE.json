@@ -1,0 +1,15 @@
+{
+    "created_at": "2026-07-21 20:52:38",
+    "pipeline_code_artifact": "data_cleaning_notebook.ipynb",
+    "source_code_repository": "project git repository / submission folder",
+    "versioned_artifacts": [
+        "data_cleaning_notebook.ipynb",
+        "DATA_PIPELINE_ARTIFACT.json",
+        "PIPELINE_CONFIGURATION.json",
+        "PIPELINE_METRICS.json",
+        "train_stage1.csv",
+        "val_stage1.csv",
+        "test_stage1.csv"
+    ],
+    "cicd_note": "Pipeline is reproducible by running run_data_pipeline() with PIPELINE_CONFIGURATION.json"
+}
