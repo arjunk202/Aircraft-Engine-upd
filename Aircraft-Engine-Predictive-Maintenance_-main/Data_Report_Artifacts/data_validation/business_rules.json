@@ -1,0 +1,32 @@
+{
+  "generated_at": "2026-08-13T11:20:31.378892+00:00",
+  "checks": [
+    {
+      "check": "engine ids are positive integers",
+      "status": "PASS",
+      "details": "min_id=1"
+    },
+    {
+      "check": "every engine's cycle sequence starts at 1 and has no gaps",
+      "status": "PASS",
+      "details": "engines_with_gaps=0"
+    },
+    {
+      "check": "truth RUL values are non-negative",
+      "status": "PASS",
+      "details": "min_truth_rul=7"
+    },
+    {
+      "check": "at least 50 training engines available for a leakage-free engine-wise split",
+      "status": "PASS",
+      "details": "train_engines=100"
+    },
+    {
+      "check": "validation split ratio yields at least one held-out engine",
+      "status": "PASS",
+      "details": "val_ratio=0.2, projected_val_engines=20"
+    }
+  ],
+  "passed": 5,
+  "failed": 0
+}

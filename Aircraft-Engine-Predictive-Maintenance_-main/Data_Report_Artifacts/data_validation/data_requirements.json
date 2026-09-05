@@ -1,0 +1,21 @@
+{
+  "generated_at": "2026-08-13T11:20:31.945928+00:00",
+  "stage": "Data Collection, Exploration & Preparation \u2014 Data Validation",
+  "non_functional": [
+    "Validation must be reproducible from the raw CSV files alone",
+    "No engine may appear in more than one split partition",
+    "All validation artifacts are written to disk for downstream stages"
+  ],
+  "functional": [
+    "Load NASA C-MAPSS FD001 raw files (PM_train.csv, PM_test.csv, PM_truth.csv)",
+    "Validate schema (required columns, dtypes, train/test parity)",
+    "Assess completeness, duplicates, and cycle-sequence integrity",
+    "Flag constant / near-zero-variance sensors for the preparation stage",
+    "Lock a deterministic engine-wise train/val split (seed=42, val_ratio=0.2)"
+  ],
+  "analytical": [
+    "Minimum 50 training engines required",
+    "Zero missing values tolerated without an explicit downstream imputation step",
+    "Zero engine overlap between train and validation partitions"
+  ]
+}

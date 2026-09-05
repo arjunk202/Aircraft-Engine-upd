@@ -1,0 +1,22 @@
+artifact_path: file:D:/Aircraft-Engine-upd/Aircraft-Engine-Predictive-Maintenance_-main/mlruns/1/models/m-10c1cb0edad04109b030aeb7990a77de/artifacts
+flavors:
+  python_function:
+    data: model.ubj
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.xgboost
+    python_version: 3.13.14
+  xgboost:
+    code: null
+    data: model.ubj
+    model_class: xgboost.sklearn.XGBRegressor
+    model_format: ubj
+    xgb_version: 3.4.0
+mlflow_version: 3.15.1
+model_id: m-10c1cb0edad04109b030aeb7990a77de
+model_size_bytes: 858654
+model_uuid: m-10c1cb0edad04109b030aeb7990a77de
+prompts: null
+run_id: f21fc2e2b7ef468e8a72928210e476af
+utc_time_created: '2026-08-20 12:42:14.189445'

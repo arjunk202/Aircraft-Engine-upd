@@ -1,0 +1,139 @@
+{
+  "generated_at": "2026-08-13T14:09:54.486872+00:00",
+  "steps_applied": [
+    "Dropped 5 constant feature(s): ['setting3', 's1', 's10', 's18', 's19']",
+    "Dropped 1 redundant feature(s): [{'feature_a': 's9', 'feature_b': 's14', 'correlation': 0.9591}]",
+    "Applied Yeo-Johnson power transform (train-fit) to 2 skewed feature(s): ['s6', 's9']",
+    "Added rolling mean/std over windows [5, 20] for 12 monotonic-trend feature(s): ['s11', 's12', 's4', 's7', 's15', 's21', 's20', 's13', 's8', 's17', 's2', 's3']",
+    "Computed RUL = max_cycle - cycle, clipped at 125 cycles (train/val only)",
+    "Dropped rows with incomplete rolling windows: {'train': 16779, 'val': 3852, 'test': 13096} -> {'train': 15259, 'val': 3472, 'test': 11196}"
+  ],
+  "dropped_constant_features": [
+    "setting3",
+    "s1",
+    "s10",
+    "s18",
+    "s19"
+  ],
+  "dropped_redundant_features": [
+    {
+      "feature_a": "s9",
+      "feature_b": "s14",
+      "correlation": 0.9591
+    }
+  ],
+  "skew_transformed_features": [
+    "s6",
+    "s9"
+  ],
+  "skew_transform_technique": "sklearn.preprocessing.PowerTransformer(method='yeo-johnson'), fit on TRAIN only",
+  "rolling_window_features": {
+    "source_features": [
+      "s11",
+      "s12",
+      "s4",
+      "s7",
+      "s15",
+      "s21",
+      "s20",
+      "s13",
+      "s8",
+      "s17",
+      "s2",
+      "s3"
+    ],
+    "windows": [
+      5,
+      20
+    ],
+    "statistics": [
+      "mean",
+      "std"
+    ]
+  },
+  "rul_clip": 125,
+  "final_feature_count": 67,
+  "final_feature_columns": [
+    "cycle",
+    "setting1",
+    "setting2",
+    "s2",
+    "s3",
+    "s4",
+    "s5",
+    "s6",
+    "s7",
+    "s8",
+    "s9",
+    "s11",
+    "s12",
+    "s13",
+    "s15",
+    "s16",
+    "s17",
+    "s20",
+    "s21",
+    "s11_mean_5",
+    "s11_std_5",
+    "s12_mean_5",
+    "s12_std_5",
+    "s4_mean_5",
+    "s4_std_5",
+    "s7_mean_5",
+    "s7_std_5",
+    "s15_mean_5",
+    "s15_std_5",
+    "s21_mean_5",
+    "s21_std_5",
+    "s20_mean_5",
+    "s20_std_5",
+    "s13_mean_5",
+    "s13_std_5",
+    "s8_mean_5",
+    "s8_std_5",
+    "s17_mean_5",
+    "s17_std_5",
+    "s2_mean_5",
+    "s2_std_5",
+    "s3_mean_5",
+    "s3_std_5",
+    "s11_mean_20",
+    "s11_std_20",
+    "s12_mean_20",
+    "s12_std_20",
+    "s4_mean_20",
+    "s4_std_20",
+    "s7_mean_20",
+    "s7_std_20",
+    "s15_mean_20",
+    "s15_std_20",
+    "s21_mean_20",
+    "s21_std_20",
+    "s20_mean_20",
+    "s20_std_20",
+    "s13_mean_20",
+    "s13_std_20",
+    "s8_mean_20",
+    "s8_std_20",
+    "s17_mean_20",
+    "s17_std_20",
+    "s2_mean_20",
+    "s2_std_20",
+    "s3_mean_20",
+    "s3_std_20"
+  ],
+  "output_shapes": {
+    "train": [
+      15259,
+      69
+    ],
+    "val": [
+      3472,
+      69
+    ],
+    "test": [
+      11196,
+      68
+    ]
+  }
+}

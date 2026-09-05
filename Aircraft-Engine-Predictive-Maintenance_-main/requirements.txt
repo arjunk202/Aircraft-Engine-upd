@@ -6,3 +6,11 @@ scikit-learn
 joblib
 xgboost
 lightgbm
+feast[grpcio]
+pyarrow
+mlflow==3.15.1
+protobuf>=7.35.1,<8
+fastapi
+uvicorn
+prometheus-client
+requests

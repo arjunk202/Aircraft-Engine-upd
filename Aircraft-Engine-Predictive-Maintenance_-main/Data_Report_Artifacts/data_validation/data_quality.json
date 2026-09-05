@@ -1,0 +1,54 @@
+{
+  "generated_at": "2026-08-13T11:20:31.362023+00:00",
+  "datasets": {
+    "train": {
+      "rows": 20631,
+      "columns": 26,
+      "completeness_pct": 100.0,
+      "missing_values_total": 0,
+      "missing_values_by_column": {},
+      "duplicate_rows": 0,
+      "duplicate_id_cycle_pairs": 0,
+      "non_finite_values": 0,
+      "invalid_cycles_le_zero": 0,
+      "unique_engines": 100,
+      "engines_with_cycle_gaps": 0
+    },
+    "test": {
+      "rows": 13096,
+      "columns": 26,
+      "completeness_pct": 100.0,
+      "missing_values_total": 0,
+      "missing_values_by_column": {},
+      "duplicate_rows": 0,
+      "duplicate_id_cycle_pairs": 0,
+      "non_finite_values": 0,
+      "invalid_cycles_le_zero": 0,
+      "unique_engines": 100,
+      "engines_with_cycle_gaps": 0
+    },
+    "truth": {
+      "rows": 100,
+      "columns": 2,
+      "completeness_pct": 100.0,
+      "missing_values_total": 0,
+      "missing_values_by_column": {},
+      "duplicate_rows": 0,
+      "duplicate_id_cycle_pairs": null,
+      "non_finite_values": 0
+    }
+  },
+  "constant_features": [
+    "setting3",
+    "s1",
+    "s10",
+    "s18",
+    "s19"
+  ],
+  "near_zero_variance_features": [
+    "setting2",
+    "s5",
+    "s16"
+  ],
+  "near_zero_variance_threshold": 1e-06
+}

@@ -1,0 +1,11 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: "rul_serving_api"
+    metrics_path: /metrics
+    static_configs:
+      # serving_api.py runs on the Windows host, not in a container;
+      # host.docker.internal is Docker Desktop's route back to the host.
+      - targets: ["host.docker.internal:8001"]

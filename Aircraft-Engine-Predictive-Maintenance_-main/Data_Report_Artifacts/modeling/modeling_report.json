@@ -1,0 +1,110 @@
+{
+  "mlflow_tracking_uri": "sqlite:///D:/Aircraft-Engine-upd/Aircraft-Engine-Predictive-Maintenance_-main/mlflow.db",
+  "mlflow_experiment": "aircraft_engine_rul_prediction",
+  "parent_run_id": "c7a1d40863c245289f4c4931f25bd0b2",
+  "feature_count": 67,
+  "train_rows": 15259,
+  "val_rows": 3472,
+  "test_rows": 11196,
+  "leaderboard": [
+    {
+      "run_name": "lightgbm",
+      "run_id": "cc829e63b4314007bdbca14b6f339526",
+      "flavor": "lightgbm",
+      "val_rmse": 15.546513525957844,
+      "val_mae": 10.97639206224888,
+      "val_r2": 0.8609564059057119,
+      "params": {
+        "n_estimators": 800,
+        "max_depth": -1,
+        "num_leaves": 31,
+        "learning_rate": 0.03,
+        "subsample": 0.8,
+        "colsample_bytree": 0.8,
+        "reg_alpha": 0.1,
+        "reg_lambda": 1.0,
+        "n_jobs": -1,
+        "verbose": -1,
+        "random_state": 42,
+        "early_stopping_rounds": 30
+      }
+    },
+    {
+      "run_name": "hist_gradient_boosting",
+      "run_id": "cfe52792907346c8944ddf17363e5af9",
+      "flavor": "sklearn",
+      "val_rmse": 15.639154063493523,
+      "val_mae": 11.033715421051882,
+      "val_r2": 0.859294367409009,
+      "params": {
+        "max_iter": 500,
+        "max_depth": 8,
+        "learning_rate": 0.05,
+        "l2_regularization": 0.1,
+        "random_state": 42,
+        "early_stopping": true,
+        "n_iter_no_change": 30
+      }
+    },
+    {
+      "run_name": "xgboost",
+      "run_id": "6206893718974a8f81292ec5f4ae6450",
+      "flavor": "xgboost",
+      "val_rmse": 15.702216916374171,
+      "val_mae": 11.268174171447754,
+      "val_r2": 0.8581573367118835,
+      "params": {
+        "n_estimators": 800,
+        "max_depth": 4,
+        "learning_rate": 0.03,
+        "subsample": 0.8,
+        "colsample_bytree": 0.6,
+        "reg_alpha": 0.1,
+        "reg_lambda": 1.0,
+        "min_child_weight": 10,
+        "n_jobs": -1,
+        "random_state": 42,
+        "early_stopping_rounds": 30
+      }
+    },
+    {
+      "run_name": "random_forest",
+      "run_id": "f93707d6fb2a426a83f3965fab2d7b14",
+      "flavor": "sklearn",
+      "val_rmse": 15.815134382624707,
+      "val_mae": 11.26754954910408,
+      "val_r2": 0.856109957745759,
+      "params": {
+        "n_estimators": 200,
+        "max_depth": 15,
+        "min_samples_split": 5,
+        "n_jobs": -1,
+        "random_state": 42
+      }
+    },
+    {
+      "run_name": "linear_regression",
+      "run_id": "2bfb99555eb346339fa8da734d165c8e",
+      "flavor": "sklearn",
+      "val_rmse": 18.687646587862208,
+      "val_mae": 15.197104468334652,
+      "val_r2": 0.7990934056674398,
+      "params": {
+        "fit_intercept": true,
+        "scaler": "StandardScaler(train-only, bundled in pipeline)"
+      }
+    }
+  ],
+  "best_model": "lightgbm",
+  "best_model_run_id": "cc829e63b4314007bdbca14b6f339526",
+  "test_set_evaluation": {
+    "engines_scored": 100,
+    "raw_test_rmse": 18.286191058667196,
+    "raw_test_mae": 13.540976794600818,
+    "clipped_test_rmse": 17.206696740459453,
+    "clipped_test_mae": 12.471585991297236
+  },
+  "registered_model_name": "aircraft_engine_rul_model",
+  "registered_model_version": 4,
+  "registered_model_alias": "champion"
+}

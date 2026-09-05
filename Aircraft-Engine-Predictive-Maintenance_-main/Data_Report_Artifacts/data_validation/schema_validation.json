@@ -1,0 +1,49 @@
+{
+  "generated_at": "2026-08-13T11:20:31.294451+00:00",
+  "checks": [
+    {
+      "type": "schema",
+      "check": "train/test column parity",
+      "status": "PASS",
+      "details": "missing_in_test=[], extra_in_test=[]"
+    },
+    {
+      "type": "schema",
+      "check": "'id' column present",
+      "status": "PASS",
+      "details": "required entity/engine id column"
+    },
+    {
+      "type": "schema",
+      "check": "'cycle' column present",
+      "status": "PASS",
+      "details": "required time-index column"
+    },
+    {
+      "type": "schema",
+      "check": "'id' is integer-valued",
+      "status": "PASS",
+      "details": "dtype=int64"
+    },
+    {
+      "type": "schema",
+      "check": "'cycle' is integer-valued",
+      "status": "PASS",
+      "details": "dtype=int64"
+    },
+    {
+      "type": "schema",
+      "check": "sensor/setting columns are numeric",
+      "status": "PASS",
+      "details": "non_numeric_columns=[]"
+    },
+    {
+      "type": "schema",
+      "check": "truth engine ids match test engine ids",
+      "status": "PASS",
+      "details": "truth_engines=100, test_engines=100"
+    }
+  ],
+  "passed": 7,
+  "failed": 0
+}

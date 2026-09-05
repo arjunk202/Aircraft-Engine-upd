@@ -1,0 +1,27 @@
+artifact_path: file:D:/Aircraft-Engine-upd/Aircraft-Engine-Predictive-Maintenance_-main/mlruns/1/models/m-3637e3dd0ec141b68bf70cfcc1e4b89b/artifacts
+flavors:
+  lightgbm:
+    code: null
+    data: model.skops
+    lgb_version: 4.7.0
+    model_class: lightgbm.sklearn.LGBMRegressor
+    serialization_format: skops
+    skops_trusted_types:
+    - lightgbm.sklearn.LGBMRegressor
+    - lightgbm.basic.Booster
+    - lightgbm.sklearn.LGBMClassifier
+    - collections.OrderedDict
+  python_function:
+    data: model.skops
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.lightgbm
+    python_version: 3.13.14
+mlflow_version: 3.15.1
+model_id: m-3637e3dd0ec141b68bf70cfcc1e4b89b
+model_size_bytes: 1421146
+model_uuid: m-3637e3dd0ec141b68bf70cfcc1e4b89b
+prompts: null
+run_id: 8708279e40d74a05ac0206872ef64a96
+utc_time_created: '2026-08-20 11:40:58.598822'

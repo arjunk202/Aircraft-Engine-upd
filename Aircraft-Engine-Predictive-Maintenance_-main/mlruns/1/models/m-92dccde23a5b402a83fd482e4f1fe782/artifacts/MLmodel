@@ -1,0 +1,85 @@
+artifact_path: file:D:/Aircraft-Engine-upd/Aircraft-Engine-Predictive-Maintenance_-main/mlruns/1/models/m-92dccde23a5b402a83fd482e4f1fe782/artifacts
+flavors:
+  lightgbm:
+    code: null
+    data: model.skops
+    lgb_version: 4.7.0
+    model_class: lightgbm.sklearn.LGBMRegressor
+    serialization_format: skops
+    skops_trusted_types:
+    - lightgbm.sklearn.LGBMRegressor
+    - collections.OrderedDict
+    - lightgbm.sklearn.LGBMClassifier
+    - lightgbm.basic.Booster
+  python_function:
+    data: model.skops
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.lightgbm
+    python_version: 3.13.14
+is_signature_from_type_hint: false
+mlflow_version: 3.15.1
+model_id: m-92dccde23a5b402a83fd482e4f1fe782
+model_size_bytes: 1430516
+model_uuid: m-92dccde23a5b402a83fd482e4f1fe782
+prompts: null
+run_id: cc829e63b4314007bdbca14b6f339526
+saved_input_example_info:
+  artifact_path: input_example.json
+  pandas_orient: split
+  serving_input_path: serving_input_example.json
+  type: dataframe
+signature:
+  inputs: '[{"type": "long", "name": "cycle", "required": true}, {"type": "double",
+    "name": "setting1", "required": true}, {"type": "double", "name": "setting2",
+    "required": true}, {"type": "double", "name": "s2", "required": true}, {"type":
+    "double", "name": "s3", "required": true}, {"type": "double", "name": "s4", "required":
+    true}, {"type": "double", "name": "s5", "required": true}, {"type": "double",
+    "name": "s6", "required": true}, {"type": "double", "name": "s7", "required":
+    true}, {"type": "double", "name": "s8", "required": true}, {"type": "double",
+    "name": "s9", "required": true}, {"type": "double", "name": "s11", "required":
+    true}, {"type": "double", "name": "s12", "required": true}, {"type": "double",
+    "name": "s13", "required": true}, {"type": "double", "name": "s15", "required":
+    true}, {"type": "double", "name": "s16", "required": true}, {"type": "long", "name":
+    "s17", "required": true}, {"type": "double", "name": "s20", "required": true},
+    {"type": "double", "name": "s21", "required": true}, {"type": "double", "name":
+    "s11_mean_5", "required": true}, {"type": "double", "name": "s11_std_5", "required":
+    true}, {"type": "double", "name": "s12_mean_5", "required": true}, {"type": "double",
+    "name": "s12_std_5", "required": true}, {"type": "double", "name": "s4_mean_5",
+    "required": true}, {"type": "double", "name": "s4_std_5", "required": true}, {"type":
+    "double", "name": "s7_mean_5", "required": true}, {"type": "double", "name": "s7_std_5",
+    "required": true}, {"type": "double", "name": "s15_mean_5", "required": true},
+    {"type": "double", "name": "s15_std_5", "required": true}, {"type": "double",
+    "name": "s21_mean_5", "required": true}, {"type": "double", "name": "s21_std_5",
+    "required": true}, {"type": "double", "name": "s20_mean_5", "required": true},
+    {"type": "double", "name": "s20_std_5", "required": true}, {"type": "double",
+    "name": "s13_mean_5", "required": true}, {"type": "double", "name": "s13_std_5",
+    "required": true}, {"type": "double", "name": "s8_mean_5", "required": true},
+    {"type": "double", "name": "s8_std_5", "required": true}, {"type": "double", "name":
+    "s17_mean_5", "required": true}, {"type": "double", "name": "s17_std_5", "required":
+    true}, {"type": "double", "name": "s2_mean_5", "required": true}, {"type": "double",
+    "name": "s2_std_5", "required": true}, {"type": "double", "name": "s3_mean_5",
+    "required": true}, {"type": "double", "name": "s3_std_5", "required": true}, {"type":
+    "double", "name": "s11_mean_20", "required": true}, {"type": "double", "name":
+    "s11_std_20", "required": true}, {"type": "double", "name": "s12_mean_20", "required":
+    true}, {"type": "double", "name": "s12_std_20", "required": true}, {"type": "double",
+    "name": "s4_mean_20", "required": true}, {"type": "double", "name": "s4_std_20",
+    "required": true}, {"type": "double", "name": "s7_mean_20", "required": true},
+    {"type": "double", "name": "s7_std_20", "required": true}, {"type": "double",
+    "name": "s15_mean_20", "required": true}, {"type": "double", "name": "s15_std_20",
+    "required": true}, {"type": "double", "name": "s21_mean_20", "required": true},
+    {"type": "double", "name": "s21_std_20", "required": true}, {"type": "double",
+    "name": "s20_mean_20", "required": true}, {"type": "double", "name": "s20_std_20",
+    "required": true}, {"type": "double", "name": "s13_mean_20", "required": true},
+    {"type": "double", "name": "s13_std_20", "required": true}, {"type": "double",
+    "name": "s8_mean_20", "required": true}, {"type": "double", "name": "s8_std_20",
+    "required": true}, {"type": "double", "name": "s17_mean_20", "required": true},
+    {"type": "double", "name": "s17_std_20", "required": true}, {"type": "double",
+    "name": "s2_mean_20", "required": true}, {"type": "double", "name": "s2_std_20",
+    "required": true}, {"type": "double", "name": "s3_mean_20", "required": true},
+    {"type": "double", "name": "s3_std_20", "required": true}]'
+  outputs: '[{"type": "double", "required": true}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-08-20 14:51:04.130130'

@@ -1,0 +1,265 @@
+{
+  "generated_at": "2026-08-13T11:20:31.385587+00:00",
+  "features": [
+    {
+      "feature": "id",
+      "data_type": "int64",
+      "role": "Entity / Engine ID",
+      "description": "Unique engine identifier used for engine-wise grouping and splitting",
+      "min": 1.0,
+      "max": 100.0,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "cycle",
+      "data_type": "int64",
+      "role": "Time index",
+      "description": "Operating cycle number since engine start (1-based, contiguous per engine)",
+      "min": 1.0,
+      "max": 362.0,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "setting1",
+      "data_type": "float64",
+      "role": "Operating setting",
+      "description": "Engine operating condition (setting1)",
+      "min": -0.0087,
+      "max": 0.0087,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "setting2",
+      "data_type": "float64",
+      "role": "Operating setting",
+      "description": "Engine operating condition (setting2)",
+      "min": -0.0006,
+      "max": 0.0006,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "setting3",
+      "data_type": "float64",
+      "role": "Operating setting",
+      "description": "Engine operating condition (setting3)",
+      "min": 100.0,
+      "max": 100.0,
+      "constant": true,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s1",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s1); potential physical degradation proxy",
+      "min": 518.67,
+      "max": 518.67,
+      "constant": true,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s2",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s2); potential physical degradation proxy",
+      "min": 641.21,
+      "max": 644.53,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s3",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s3); potential physical degradation proxy",
+      "min": 1571.04,
+      "max": 1616.91,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s4",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s4); potential physical degradation proxy",
+      "min": 1382.25,
+      "max": 1441.49,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s5",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s5); potential physical degradation proxy",
+      "min": 14.62,
+      "max": 14.62,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s6",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s6); potential physical degradation proxy",
+      "min": 21.6,
+      "max": 21.61,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s7",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s7); potential physical degradation proxy",
+      "min": 549.85,
+      "max": 556.06,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s8",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s8); potential physical degradation proxy",
+      "min": 2387.9,
+      "max": 2388.56,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s9",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s9); potential physical degradation proxy",
+      "min": 9021.73,
+      "max": 9244.59,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s10",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s10); potential physical degradation proxy",
+      "min": 1.3,
+      "max": 1.3,
+      "constant": true,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s11",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s11); potential physical degradation proxy",
+      "min": 46.85,
+      "max": 48.53,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s12",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s12); potential physical degradation proxy",
+      "min": 518.69,
+      "max": 523.38,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s13",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s13); potential physical degradation proxy",
+      "min": 2387.88,
+      "max": 2388.56,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s14",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s14); potential physical degradation proxy",
+      "min": 8099.94,
+      "max": 8293.72,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s15",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s15); potential physical degradation proxy",
+      "min": 8.3249,
+      "max": 8.5848,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s16",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s16); potential physical degradation proxy",
+      "min": 0.03,
+      "max": 0.03,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s17",
+      "data_type": "int64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s17); potential physical degradation proxy",
+      "min": 388.0,
+      "max": 400.0,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s18",
+      "data_type": "int64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s18); potential physical degradation proxy",
+      "min": 2388.0,
+      "max": 2388.0,
+      "constant": true,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s19",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s19); potential physical degradation proxy",
+      "min": 100.0,
+      "max": 100.0,
+      "constant": true,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s20",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s20); potential physical degradation proxy",
+      "min": 38.14,
+      "max": 39.43,
+      "constant": false,
+      "source": "Raw data"
+    },
+    {
+      "feature": "s21",
+      "data_type": "float64",
+      "role": "Sensor measurement",
+      "description": "Raw sensor reading (s21); potential physical degradation proxy",
+      "min": 22.8942,
+      "max": 23.6184,
+      "constant": false,
+      "source": "Raw data"
+    }
+  ]
+}

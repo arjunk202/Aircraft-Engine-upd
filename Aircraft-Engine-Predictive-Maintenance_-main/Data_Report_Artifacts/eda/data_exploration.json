@@ -1,0 +1,438 @@
+{
+  "generated_at": "2026-08-13T13:35:23.637709+00:00",
+  "source_file": "Data_Report_Artifacts\\data_validation\\validated_splits\\validated_train_raw.csv",
+  "engines_analyzed": 80,
+  "rows_analyzed": 16779,
+  "distribution_summary": {
+    "setting1": {
+      "mean": -2.1085881160975033e-05,
+      "std": 0.0021860520232327963,
+      "min": -0.0087,
+      "max": 0.0087,
+      "q25": -0.0015,
+      "median": 0.0,
+      "q75": 0.0014,
+      "skew": -0.03337350007775729,
+      "kurtosis": 0.011362813782389125
+    },
+    "setting2": {
+      "mean": 4.1718815185648735e-06,
+      "std": 0.0002924414320790231,
+      "min": -0.0006,
+      "max": 0.0006,
+      "q25": -0.0002,
+      "median": 0.0,
+      "q75": 0.0003,
+      "skew": 0.004052318218136634,
+      "kurtosis": -1.1353725449326482
+    },
+    "setting3": {
+      "mean": 100.0,
+      "std": 0.0,
+      "min": 100.0,
+      "max": 100.0,
+      "q25": 100.0,
+      "median": 100.0,
+      "q75": 100.0,
+      "skew": 0.0,
+      "kurtosis": 0.0
+    },
+    "s1": {
+      "mean": 518.67,
+      "std": 0.0,
+      "min": 518.67,
+      "max": 518.67,
+      "q25": 518.67,
+      "median": 518.67,
+      "q75": 518.67,
+      "skew": 0.0,
+      "kurtosis": 0.0
+    },
+    "s2": {
+      "mean": 642.6814172477501,
+      "std": 0.5000962416523437,
+      "min": 641.21,
+      "max": 644.53,
+      "q25": 642.33,
+      "median": 642.64,
+      "q75": 643.0,
+      "skew": 0.3291230425469997,
+      "kurtosis": -0.09693614979573395
+    },
+    "s3": {
+      "mean": 1590.5250646641634,
+      "std": 6.121279650614137,
+      "min": 1571.04,
+      "max": 1616.91,
+      "q25": 1586.29,
+      "median": 1590.11,
+      "q75": 1594.39,
+      "skew": 0.31059778330001003,
+      "kurtosis": 0.012139288441182394
+    },
+    "s4": {
+      "mean": 1408.954103939448,
+      "std": 8.988672466480422,
+      "min": 1382.25,
+      "max": 1441.49,
+      "q25": 1402.37,
+      "median": 1408.05,
+      "q75": 1414.56,
+      "skew": 0.44974347582082724,
+      "kurtosis": -0.15859906364061516
+    },
+    "s5": {
+      "mean": 14.620000000000003,
+      "std": 3.552819551393876e-15,
+      "min": 14.62,
+      "max": 14.62,
+      "q25": 14.62,
+      "median": 14.62,
+      "q75": 14.62,
+      "skew": 0.0,
+      "kurtosis": 0.0
+    },
+    "s6": {
+      "mean": 21.60980272960248,
+      "std": 0.0013906486338579446,
+      "min": 21.6,
+      "max": 21.61,
+      "q25": 21.61,
+      "median": 21.61,
+      "q75": 21.61,
+      "skew": -6.908002529024799,
+      "kurtosis": 45.72594930518006
+    },
+    "s7": {
+      "mean": 553.3662989451099,
+      "std": 0.8880221535097262,
+      "min": 549.85,
+      "max": 556.06,
+      "q25": 552.81,
+      "median": 553.44,
+      "q75": 554.01,
+      "skew": -0.39951147915802526,
+      "kurtosis": -0.1634800422204563
+    },
+    "s8": {
+      "mean": 2388.0968389057753,
+      "std": 0.07054930480372058,
+      "min": 2387.9,
+      "max": 2388.52,
+      "q25": 2388.05,
+      "median": 2388.09,
+      "q75": 2388.14,
+      "skew": 0.4586879733725565,
+      "kurtosis": 0.23657289993401687
+    },
+    "s9": {
+      "mean": 9064.848749031527,
+      "std": 21.034577479622104,
+      "min": 9021.73,
+      "max": 9239.76,
+      "q25": 9053.564999999999,
+      "median": 9060.55,
+      "q75": 9068.965,
+      "skew": 2.616121956879347,
+      "kurtosis": 10.072819541226492
+    },
+    "s10": {
+      "mean": 1.3,
+      "std": 0.0,
+      "min": 1.3,
+      "max": 1.3,
+      "q25": 1.3,
+      "median": 1.3,
+      "q75": 1.3,
+      "skew": 0.0,
+      "kurtosis": 0.0
+    },
+    "s11": {
+      "mean": 47.54125871625245,
+      "std": 0.26724385154726554,
+      "min": 46.85,
+      "max": 48.53,
+      "q25": 47.35,
+      "median": 47.52,
+      "q75": 47.7,
+      "skew": 0.4641165517838268,
+      "kurtosis": -0.18374599896737331
+    },
+    "s12": {
+      "mean": 521.4108731152036,
+      "std": 0.7388506080765497,
+      "min": 518.69,
+      "max": 523.38,
+      "q25": 520.95,
+      "median": 521.48,
+      "q75": 521.95,
+      "skew": -0.4389643675912334,
+      "kurtosis": -0.1565955586777692
+    },
+    "s13": {
+      "mean": 2388.096515882949,
+      "std": 0.0715029958756179,
+      "min": 2387.88,
+      "max": 2388.56,
+      "q25": 2388.04,
+      "median": 2388.09,
+      "q75": 2388.14,
+      "skew": 0.467404830633686,
+      "kurtosis": 0.3450031732937995
+    },
+    "s14": {
+      "mean": 8143.364420406459,
+      "std": 18.120457908917484,
+      "min": 8102.82,
+      "max": 8290.25,
+      "q25": 8133.69,
+      "median": 8140.44,
+      "q75": 8147.755,
+      "skew": 2.4367046950586597,
+      "kurtosis": 9.635730956266741
+    },
+    "s15": {
+      "mean": 8.442091697955778,
+      "std": 0.037492810940036446,
+      "min": 8.3249,
+      "max": 8.5848,
+      "q25": 8.4149,
+      "median": 8.4391,
+      "q75": 8.4655,
+      "skew": 0.38117844391681577,
+      "kurtosis": -0.10921188120348813
+    },
+    "s16": {
+      "mean": 0.030000000000000006,
+      "std": 6.939100686316165e-18,
+      "min": 0.03,
+      "max": 0.03,
+      "q25": 0.03,
+      "median": 0.03,
+      "q75": 0.03,
+      "skew": 0.0,
+      "kurtosis": 0.0
+    },
+    "s17": {
+      "mean": 393.2091900590023,
+      "std": 1.5486265856038894,
+      "min": 388.0,
+      "max": 400.0,
+      "q25": 392.0,
+      "median": 393.0,
+      "q75": 394.0,
+      "skew": 0.34462906406102833,
+      "kurtosis": -0.06527073697758867
+    },
+    "s18": {
+      "mean": 2388.0,
+      "std": 0.0,
+      "min": 2388.0,
+      "max": 2388.0,
+      "q25": 2388.0,
+      "median": 2388.0,
+      "q75": 2388.0,
+      "skew": 0.0,
+      "kurtosis": 0.0
+    },
+    "s19": {
+      "mean": 100.0,
+      "std": 0.0,
+      "min": 100.0,
+      "max": 100.0,
+      "q25": 100.0,
+      "median": 100.0,
+      "q75": 100.0,
+      "skew": 0.0,
+      "kurtosis": 0.0
+    },
+    "s20": {
+      "mean": 38.81593420346862,
+      "std": 0.1808514239228008,
+      "min": 38.19,
+      "max": 39.43,
+      "q25": 38.7,
+      "median": 38.83,
+      "q75": 38.94,
+      "skew": -0.3415230869660968,
+      "kurtosis": -0.13704570928560544
+    },
+    "s21": {
+      "mean": 23.289709619166814,
+      "std": 0.10840925018437032,
+      "min": 22.8942,
+      "max": 23.6127,
+      "q25": 23.2215,
+      "median": 23.2977,
+      "q75": 23.3671,
+      "skew": -0.34639419664030713,
+      "kurtosis": -0.13453155570807418
+    }
+  },
+  "skewed_features": [
+    {
+      "feature": "s6",
+      "skew": -6.908
+    },
+    {
+      "feature": "s9",
+      "skew": 2.616
+    },
+    {
+      "feature": "s14",
+      "skew": 2.437
+    }
+  ],
+  "engine_lifecycle": {
+    "engine_count": 80,
+    "min_cycles": 128,
+    "max_cycles": 362,
+    "mean_cycles": 209.74,
+    "median_cycles": 199.0,
+    "std_cycles": 49.04
+  },
+  "correlation_analysis": {
+    "high_correlation_pairs": [
+      {
+        "feature_a": "s9",
+        "feature_b": "s14",
+        "correlation": 0.9591
+      }
+    ],
+    "high_correlation_threshold": 0.9,
+    "top_rul_correlated_features": [
+      {
+        "feature": "s11",
+        "correlation": -0.697
+      },
+      {
+        "feature": "s4",
+        "correlation": -0.6801
+      },
+      {
+        "feature": "s12",
+        "correlation": 0.6746
+      },
+      {
+        "feature": "s7",
+        "correlation": 0.6574
+      },
+      {
+        "feature": "s15",
+        "correlation": -0.642
+      },
+      {
+        "feature": "s21",
+        "correlation": 0.6381
+      },
+      {
+        "feature": "s20",
+        "correlation": 0.6284
+      },
+      {
+        "feature": "s2",
+        "correlation": -0.6057
+      },
+      {
+        "feature": "s17",
+        "correlation": -0.6046
+      },
+      {
+        "feature": "s3",
+        "correlation": -0.5821
+      }
+    ]
+  },
+  "degradation_trend_analysis": {
+    "mean_spearman_vs_cycle": {
+      "setting1": -0.0045,
+      "setting2": 0.0111,
+      "setting3": null,
+      "s1": null,
+      "s2": 0.6604,
+      "s3": 0.6269,
+      "s4": 0.7742,
+      "s5": null,
+      "s6": 0.1453,
+      "s7": -0.7505,
+      "s8": 0.6802,
+      "s9": 0.4164,
+      "s10": null,
+      "s11": 0.8102,
+      "s12": -0.7851,
+      "s13": 0.6883,
+      "s14": 0.2524,
+      "s15": 0.7122,
+      "s16": null,
+      "s17": 0.6615,
+      "s18": null,
+      "s19": null,
+      "s20": -0.7025,
+      "s21": -0.7048
+    },
+    "monotonic_trend_features": [
+      {
+        "feature": "s11",
+        "mean_spearman_vs_cycle": 0.8102
+      },
+      {
+        "feature": "s12",
+        "mean_spearman_vs_cycle": -0.7851
+      },
+      {
+        "feature": "s4",
+        "mean_spearman_vs_cycle": 0.7742
+      },
+      {
+        "feature": "s7",
+        "mean_spearman_vs_cycle": -0.7505
+      },
+      {
+        "feature": "s15",
+        "mean_spearman_vs_cycle": 0.7122
+      },
+      {
+        "feature": "s21",
+        "mean_spearman_vs_cycle": -0.7048
+      },
+      {
+        "feature": "s20",
+        "mean_spearman_vs_cycle": -0.7025
+      },
+      {
+        "feature": "s13",
+        "mean_spearman_vs_cycle": 0.6883
+      },
+      {
+        "feature": "s8",
+        "mean_spearman_vs_cycle": 0.6802
+      },
+      {
+        "feature": "s17",
+        "mean_spearman_vs_cycle": 0.6615
+      },
+      {
+        "feature": "s2",
+        "mean_spearman_vs_cycle": 0.6604
+      },
+      {
+        "feature": "s3",
+        "mean_spearman_vs_cycle": 0.6269
+      }
+    ],
+    "monotonic_trend_threshold": 0.5
+  },
+  "recommendations": [
+    "12 feature(s) show a consistent monotonic trend with cycle (s11, s12, s4, s7, s15, s21, s20, s13...); prioritize these for rolling-window (mean/std/trend) feature engineering.",
+    "1 feature(s) are highly correlated (|r|>=0.9) with another feature already in the set (s14); consider dropping one of each redundant pair to reduce dimensionality.",
+    "3 feature(s) are notably skewed (s6, s9, s14); consider scaling method robust to skew.",
+    "Target formalization (RUL = max_cycle - cycle, with a clip threshold) belongs to the Data Preparation stage, not EDA \u2014 this report's RUL figures are exploratory only."
+  ],
+  "plots_generated": [
+    "correlation_heatmap.png",
+    "degradation_trends.png",
+    "engine_lifetime_distribution.png",
+    "exploratory_rul_distribution.png",
+    "rul_correlation_barh.png"
+  ]
+}

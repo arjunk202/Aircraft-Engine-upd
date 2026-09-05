@@ -1,0 +1,23 @@
+artifact_path: file:D:/Aircraft-Engine-upd/Aircraft-Engine-Predictive-Maintenance_-main/mlruns/1/models/m-e1977c2fc79e4bee8ee5d9bb0fbbc352/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.skops
+    predict_fn: predict
+    python_version: 3.13.14
+  sklearn:
+    code: null
+    pickled_model: model.skops
+    serialization_format: skops
+    sklearn_version: 1.9.0
+    skops_trusted_types: null
+mlflow_version: 3.15.1
+model_id: m-e1977c2fc79e4bee8ee5d9bb0fbbc352
+model_size_bytes: 3783794
+model_uuid: m-e1977c2fc79e4bee8ee5d9bb0fbbc352
+prompts: null
+run_id: a37ce8810cf94f5692fb11142af5b397
+utc_time_created: '2026-08-20 11:41:15.985635'

@@ -1,0 +1,366 @@
+{
+  "id": null,
+  "uid": "rul-serving",
+  "title": "Aircraft Engine RUL - Model Serving",
+  "tags": ["mlops", "rul", "feast", "mlflow"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 2,
+  "refresh": "5s",
+  "time": { "from": "now-30m", "to": "now" },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Request rate (success vs error)",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "expr": "sum by (status) (rate(rul_prediction_requests_total[1m]))",
+          "legendFormat": "{{status}}",
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "reqps" }, "overrides": [] }
+    },
+    {
+      "id": 2,
+      "title": "Prediction latency (p50 / p95 / p99)",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(rul_prediction_latency_seconds_bucket[5m])) by (le))",
+          "legendFormat": "p50",
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(rul_prediction_latency_seconds_bucket[5m])) by (le))",
+          "legendFormat": "p95",
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(rul_prediction_latency_seconds_bucket[5m])) by (le))",
+          "legendFormat": "p99",
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "s" }, "overrides": [] }
+    },
+    {
+      "id": 3,
+      "title": "Predicted RUL distribution (median / p95)",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(rul_predicted_value_bucket[5m])) by (le))",
+          "legendFormat": "median predicted RUL",
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(rul_predicted_value_bucket[5m])) by (le))",
+          "legendFormat": "p95 predicted RUL",
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] }
+    },
+    {
+      "id": 4,
+      "title": "Prediction absolute error vs ground truth (median / p95)",
+      "type": "timeseries",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(rul_prediction_absolute_error_bucket[5m])) by (le))",
+          "legendFormat": "median abs error",
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(rul_prediction_absolute_error_bucket[5m])) by (le))",
+          "legendFormat": "p95 abs error",
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] }
+    },
+    {
+      "id": 5,
+      "title": "Total requests (last 30m)",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 6, "x": 0, "y": 16 },
+      "targets": [
+        {
+          "expr": "sum(increase(rul_prediction_requests_total[30m]))",
+          "legendFormat": "requests",
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Error rate (last 30m)",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 6, "x": 6, "y": 16 },
+      "targets": [
+        {
+          "expr": "sum(increase(rul_prediction_requests_total{status=\"error\"}[30m])) / sum(increase(rul_prediction_requests_total[30m]))",
+          "legendFormat": "error rate",
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percentunit" }, "overrides": [] }
+    },
+    {
+      "id": 7,
+      "title": "Loaded champion model",
+      "type": "table",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 12, "x": 12, "y": 16 },
+      "targets": [
+        {
+          "expr": "rul_model_info",
+          "format": "table",
+          "instant": true,
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": "row",
+      "title": "Engine Risk Breakdown (latest predicted RUL per engine: critical ≤ 20, moderate 20-60, safe ≥ 60)",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 21 },
+      "collapsed": false,
+      "panels": []
+    },
+    {
+      "id": 8,
+      "title": "Critical engines (RUL ≤ 20)",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 6, "x": 0, "y": 22 },
+      "targets": [
+        {
+          "expr": "count(rul_engine_predicted_rul <= 20) or vector(0)",
+          "legendFormat": "critical",
+          "instant": true,
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "short", "color": { "mode": "fixed", "fixedColor": "red" } },
+        "overrides": []
+      }
+    },
+    {
+      "id": 9,
+      "title": "Moderate engines (20 < RUL < 60)",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 6, "x": 6, "y": 22 },
+      "targets": [
+        {
+          "expr": "count(rul_engine_predicted_rul > 20 and rul_engine_predicted_rul < 60) or vector(0)",
+          "legendFormat": "moderate",
+          "instant": true,
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "short", "color": { "mode": "fixed", "fixedColor": "orange" } },
+        "overrides": []
+      }
+    },
+    {
+      "id": 10,
+      "title": "Safe engines (RUL ≥ 60)",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 6, "x": 12, "y": 22 },
+      "targets": [
+        {
+          "expr": "count(rul_engine_predicted_rul >= 60) or vector(0)",
+          "legendFormat": "safe",
+          "instant": true,
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": { "unit": "short", "color": { "mode": "fixed", "fixedColor": "green" } },
+        "overrides": []
+      }
+    },
+    {
+      "id": 11,
+      "title": "Total engines monitored",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 6, "x": 18, "y": 22 },
+      "targets": [
+        {
+          "expr": "count(rul_engine_predicted_rul) or vector(0)",
+          "legendFormat": "total",
+          "instant": true,
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] }
+    },
+    {
+      "id": 12,
+      "title": "Per-engine predicted RUL (latest)",
+      "type": "bargauge",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 27 },
+      "options": {
+        "orientation": "horizontal",
+        "displayMode": "gradient",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }
+      },
+      "targets": [
+        {
+          "expr": "rul_engine_predicted_rul",
+          "legendFormat": "engine {{engine_id}}",
+          "instant": true,
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "value": null, "color": "red" },
+              { "value": 20, "color": "orange" },
+              { "value": 60, "color": "green" }
+            ]
+          }
+        },
+        "overrides": []
+      }
+    },
+    {
+      "id": 21,
+      "type": "row",
+      "title": "Risk Classification Quality (precision/recall derived from thresholding RUL — not native to regression, see serving_api.py docstring)",
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 37 },
+      "collapsed": false,
+      "panels": []
+    },
+    {
+      "id": 13,
+      "title": "Critical recall (of truly-critical engines, % correctly flagged)",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 8, "x": 0, "y": 38 },
+      "targets": [
+        {
+          "expr": "sum(rul_risk_classification_total{predicted_category=\"critical\",actual_category=\"critical\"}) / sum(rul_risk_classification_total{actual_category=\"critical\"})",
+          "instant": true,
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percentunit", "color": { "mode": "fixed", "fixedColor": "red" } }, "overrides": [] }
+    },
+    {
+      "id": 14,
+      "title": "Critical precision (of engines flagged critical, % truly critical)",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 8, "x": 8, "y": 38 },
+      "targets": [
+        {
+          "expr": "sum(rul_risk_classification_total{predicted_category=\"critical\",actual_category=\"critical\"}) / sum(rul_risk_classification_total{predicted_category=\"critical\"})",
+          "instant": true,
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percentunit", "color": { "mode": "fixed", "fixedColor": "red" } }, "overrides": [] }
+    },
+    {
+      "id": 15,
+      "title": "Overall risk-classification accuracy",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 8, "x": 16, "y": 38 },
+      "targets": [
+        {
+          "expr": "(sum(rul_risk_classification_total{predicted_category=\"critical\",actual_category=\"critical\"}) + sum(rul_risk_classification_total{predicted_category=\"moderate\",actual_category=\"moderate\"}) + sum(rul_risk_classification_total{predicted_category=\"safe\",actual_category=\"safe\"})) / sum(rul_risk_classification_total)",
+          "instant": true,
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percentunit" }, "overrides": [] }
+    },
+    {
+      "id": 16,
+      "title": "Moderate recall",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 6, "x": 0, "y": 43 },
+      "targets": [
+        {
+          "expr": "sum(rul_risk_classification_total{predicted_category=\"moderate\",actual_category=\"moderate\"}) / sum(rul_risk_classification_total{actual_category=\"moderate\"})",
+          "instant": true,
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percentunit", "color": { "mode": "fixed", "fixedColor": "orange" } }, "overrides": [] }
+    },
+    {
+      "id": 17,
+      "title": "Moderate precision",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 6, "x": 6, "y": 43 },
+      "targets": [
+        {
+          "expr": "sum(rul_risk_classification_total{predicted_category=\"moderate\",actual_category=\"moderate\"}) / sum(rul_risk_classification_total{predicted_category=\"moderate\"})",
+          "instant": true,
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percentunit", "color": { "mode": "fixed", "fixedColor": "orange" } }, "overrides": [] }
+    },
+    {
+      "id": 18,
+      "title": "Safe recall",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 6, "x": 12, "y": 43 },
+      "targets": [
+        {
+          "expr": "sum(rul_risk_classification_total{predicted_category=\"safe\",actual_category=\"safe\"}) / sum(rul_risk_classification_total{actual_category=\"safe\"})",
+          "instant": true,
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percentunit", "color": { "mode": "fixed", "fixedColor": "green" } }, "overrides": [] }
+    },
+    {
+      "id": 19,
+      "title": "Safe precision",
+      "type": "stat",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 5, "w": 6, "x": 18, "y": 43 },
+      "targets": [
+        {
+          "expr": "sum(rul_risk_classification_total{predicted_category=\"safe\",actual_category=\"safe\"}) / sum(rul_risk_classification_total{predicted_category=\"safe\"})",
+          "instant": true,
+          "datasource": { "type": "prometheus", "uid": "prometheus" }
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "percentunit", "color": { "mode": "fixed", "fixedColor": "green" } }, "overrides": [] }
+    }
+  ]
+}
