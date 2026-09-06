@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fleet Maintenance Planner</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#0f1114; --card:#1a1d21; --card2:#212429; --line:#2a2e34;
+    --text:#f0f2f4; --muted:#9aa3ad; --faint:#6b7178;
+    --ok:#46b862; --okbg:#152a1c;
+    --watch:#d99a2b; --watchbg:#2e2411;
+    --crit:#e05650; --critbg:#2e1817;
+    --accent:#6b78d6;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    --mono:'SFMono-Regular',Consolas,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.55;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1000px;margin:0 auto;padding:28px 24px}
+
+  .head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px}
+  .title{font-size:20px;font-weight:700;letter-spacing:.2px}
+  .subtitle{font-size:13px;color:var(--faint);margin-bottom:20px}
+  .updated{font-size:12.5px;color:var(--faint)}
+
+  .tabs{display:flex;gap:4px;margin-bottom:20px}
+  .tab{font-size:13px;color:var(--muted);background:none;border:none;padding:7px 14px;cursor:pointer;border-radius:8px}
+  .tab:hover{color:var(--text)}
+  .tab.active{background:var(--card);color:var(--text)}
+
+  /* attention banner */
+  .banner{border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:14px}
+  .banner.crit{background:var(--critbg);border:1px solid #4a2422}
+  .banner.ok{background:var(--okbg);border:1px solid #234a2c}
+  .banner .icon{font-size:22px}
+  .banner .txt{font-size:15px;font-weight:600}
+  .banner .sub{font-size:12.5px;color:var(--muted);font-weight:400;margin-top:2px}
+
+  /* metric cards */
+  .metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:26px}
+  .metric{background:var(--card);border-radius:12px;padding:16px 18px}
+  .metric .label{font-size:12px;color:var(--muted);margin-bottom:8px}
+  .metric .val{font-size:27px;font-weight:700;letter-spacing:.3px;font-variant-numeric:tabular-nums}
+  .metric .val.crit{color:var(--crit)} .metric .val.ok{color:var(--ok)}
+  .metric .unit{font-size:15px;font-weight:600;color:var(--muted)}
+
+  /* controls */
+  .ctrl{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+  button.act{font-family:inherit;font-size:13px;color:var(--text);background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:7px 14px;cursor:pointer}
+  button.act:hover{background:#282c32}
+  button.act.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .clk{font-size:12.5px;color:var(--muted);margin-left:auto;font-variant-numeric:tabular-nums}
+  input[type=range]{accent-color:var(--accent)}
+  .conn{font-size:11.5px;padding:3px 10px;border-radius:20px}
+  .conn.live{background:var(--okbg);color:var(--ok)}
+  .conn.mock{background:var(--watchbg);color:var(--watch)}
+
+  /* action groups */
+  .group{margin-bottom:22px}
+  .grouphead{display:flex;align-items:center;gap:9px;margin:0 0 10px 2px}
+  .grouphead .dot{width:9px;height:9px;border-radius:50%}
+  .grouphead .dot.crit{background:var(--crit)} .grouphead .dot.watch{background:var(--watch)} .grouphead .dot.ok{background:var(--ok)}
+  .grouphead .gt{font-size:14px;font-weight:700}
+  .grouphead .gc{font-size:12.5px;color:var(--faint)}
+  .list{background:var(--card);border-radius:12px;overflow:hidden}
+  .list.empty{padding:16px 20px;color:var(--faint);font-size:13px}
+  .showall{text-align:center;padding:9px;margin-top:6px;font-size:12.5px;color:var(--muted);cursor:pointer;border-radius:8px;background:var(--card)}
+  .showall:hover{background:var(--card2);color:var(--text)}
+  .row{display:flex;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .1s}
+  .row:last-child{border-bottom:none}
+  .row:hover{background:var(--card2)}
+  .row .info{width:170px;flex-shrink:0}
+  .row .name{font-size:15px;font-weight:700}
+  .row .sub{font-size:12px;color:var(--faint);margin-top:1px}
+  .row .action{flex:1;font-size:13.5px;color:var(--text)}
+  .row .action .lead{color:var(--muted);font-size:12.5px}
+  .row .rul{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;margin-left:12px;white-space:nowrap}
+  .row .rul.ok{color:var(--ok)} .row .rul.watch{color:var(--watch)} .row .rul.crit{color:var(--crit)}
+
+  /* detail */
+  .back{font-size:13px;color:var(--muted);background:none;border:none;cursor:pointer;padding:0;margin-bottom:14px}
+  .back:hover{color:var(--text)}
+  .dgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .actionbox{border-radius:10px;padding:14px 18px;margin-bottom:18px;font-size:14.5px;font-weight:600}
+  .actionbox.crit{background:var(--critbg);color:var(--crit)}
+  .actionbox.watch{background:var(--watchbg);color:var(--watch)}
+  .actionbox.ok{background:var(--okbg);color:var(--ok)}
+  .actionbox .sub{font-size:12.5px;font-weight:400;color:var(--muted);margin-top:4px}
+  .chartcard{background:var(--card);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+  .chartcard .h{font-size:13px;color:var(--muted);margin-bottom:10px}
+  .chartbox{position:relative;height:150px}
+
+  /* test bench */
+  .tbcard{background:var(--card);border-radius:12px;padding:18px 20px;margin-bottom:14px}
+  .tbcard h3{margin:0 0 4px;font-size:15px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+  .tbcard .desc{font-size:12.5px;color:var(--faint);margin-bottom:14px}
+  .res{display:flex;align-items:baseline;gap:9px;margin-top:12px}
+  .res .n{font-size:28px;font-weight:700;font-variant-numeric:tabular-nums}
+  .pill{font-size:11.5px;font-weight:600;padding:3px 12px;border-radius:20px}
+  .pill.ok{background:var(--okbg);color:var(--ok)} .pill.watch{background:var(--watchbg);color:var(--watch)} .pill.crit{background:var(--critbg);color:var(--crit)}
+  .sim{font-size:10.5px;background:var(--card2);color:var(--muted);padding:3px 10px;border-radius:20px;font-weight:600}
+  .streamline{font-size:12.5px;color:var(--muted);margin-top:8px;font-variant-numeric:tabular-nums}
+  .hidden{display:none}
+  .foot{font-size:11px;color:var(--faint);margin-top:20px;line-height:1.6}
+  @media(max-width:720px){.metrics{grid-template-columns:1fr}.dgrid{grid-template-columns:1fr}.row .info{width:130px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <div class="title">Fleet Maintenance Planner</div>
+    <div class="updated" id="updated">Updated just now</div>
+  </div>
+  <div class="subtitle">Predictive maintenance decisions for the engine fleet — powered by the LightGBM RUL model.</div>
+
+  <div class="tabs">
+    <button class="tab active" id="tab-ops" onclick="showTab('ops')">Planner</button>
+    <button class="tab" id="tab-tb" onclick="showTab('tb')">Test bench</button>
+    <button class="tab" id="tab-model" onclick="showTab('model')">Model</button>
+  </div>
+
+  <!-- ============ PLANNER ============ -->
+  <div id="view-ops">
+
+    <div id="banner" class="banner ok">
+      <span class="icon">✓</span>
+      <div><div class="txt" id="banner-txt">Fleet nominal</div><div class="sub" id="banner-sub"></div></div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><div class="label">Fleet flight-ready</div><div class="val ok" id="m-ready">—</div></div>
+      <div class="metric"><div class="label">Need action now</div><div class="val crit" id="m-act">—</div></div>
+      <div class="metric"><div class="label">Avg predicted life left</div><div class="val" id="m-avg">—<span class="unit"> cyc</span></div></div>
+    </div>
+
+    <div id="planner-panel">
+      <div class="ctrl">
+        <button class="act" onclick="renderPlanner()">↻ Refresh</button>
+        <span class="conn mock" id="conn">● mock data</span>
+        <span class="clk">held-out test fleet</span>
+      </div>
+
+      <div id="groups"></div>
+    </div>
+
+    <!-- detail -->
+    <div id="detail-panel" class="hidden">
+      <button class="back" onclick="closeDetail()">← Back to planner</button>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <div class="title" id="d-name" style="font-size:17px">Engine —</div>
+      </div>
+      <div id="d-action" class="actionbox ok">—</div>
+      <div class="dgrid">
+        <div class="metric"><div class="label">Predicted life left</div><div class="val" id="d-rul">—<span class="unit"> cyc</span></div></div>
+        <div class="metric"><div class="label">Cycles run</div><div class="val" id="d-run">—</div></div>
+      </div>
+      <div class="chartcard"><div class="h">Predicted remaining life over time</div><div class="chartbox"><canvas id="rulChart"></canvas></div></div>
+      <div class="chartcard"><div class="h">Sensor degradation — s11, s4</div><div class="chartbox"><canvas id="sensorChart"></canvas></div></div>
+    </div>
+
+  </div>
+
+  <!-- ============ MODEL GOVERNANCE ============ -->
+  <div id="view-model" class="hidden">
+    <div class="banner ok" style="margin-bottom:20px">
+      <span class="icon">◆</span>
+      <div>
+        <div class="txt" id="mv-headline">LightGBM v4</div>
+        <div class="sub" id="mv-sub">Registered as <code>aircraft_engine_rul_model</code> · alias <b>champion</b> · version 4 · promoted 2026-07-13</div>
+      </div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric"><div class="label">Validation RMSE</div><div class="val">15.55<span class="unit"> cyc</span></div></div>
+      <div class="metric"><div class="label">Validation MAE</div><div class="val">10.98<span class="unit"> cyc</span></div></div>
+      <div class="metric"><div class="label">R&sup2;</div><div class="val">0.861</div></div>
+    </div>
+
+    <div class="seclabel" style="margin-top:6px">Model selection — 5 candidates compared on the validation split</div>
+    <div class="list" style="margin-bottom:20px">
+      <div class="row" style="cursor:default"><div class="info"><div class="name">LightGBM</div><div class="sub">champion</div></div><div class="action">Gradient boosting (leaf-wise). Best accuracy, fast inference.<div class="lead">n_estimators 800 · lr 0.03 · num_leaves 31</div></div><div class="rul ok">RMSE 15.55</div></div>
+      <div class="row" style="cursor:default"><div class="info"><div class="name">HistGradientBoosting</div><div class="sub">runner-up</div></div><div class="action">Histogram-based gradient boosting (sklearn).<div class="lead">near-identical performance</div></div><div class="rul watch">RMSE 15.64</div></div>
+      <div class="row" style="cursor:default"><div class="info"><div class="name">XGBoost</div><div class="sub">candidate</div></div><div class="action">Gradient boosting (level-wise), tuned.<div class="lead">strong, marginally behind</div></div><div class="rul watch">RMSE 15.70</div></div>
+      <div class="row" style="cursor:default"><div class="info"><div class="name">Random Forest</div><div class="sub">ensemble baseline</div></div><div class="action">Bagged decision trees.<div class="lead">solid, less accurate than boosting</div></div><div class="rul watch">RMSE 15.82</div></div>
+      <div class="row" style="cursor:default"><div class="info"><div class="name">Linear Regression</div><div class="sub">baseline</div></div><div class="action">Linear baseline — the bar every model must clear.<div class="lead">confirms the problem is non-linear</div></div><div class="rul crit">RMSE 18.69</div></div>
+    </div>
+
+    <div class="tbcard">
+      <h3>Why LightGBM was promoted</h3>
+      <div class="desc" style="margin-bottom:0;line-height:1.6">
+        Five models were trained on 67 engineered features (15,259 training rows), spanning a linear baseline to optimized gradient boosting, so gains could be attributed to model capability. All were tracked in MLflow. LightGBM achieved the lowest validation RMSE and was registered as the <b>champion</b> in the model registry. Because the serving API loads the model by its <code>champion</code> alias, promoting a retrained model to production is a single registry update — no change to the serving code or this dashboard.
+      </div>
+    </div>
+
+    <div class="foot" style="margin-top:16px">
+      Governance data from the MLflow model registry and experiment tracking. The three near-tied boosting methods confirm the result is robust; the ~3-cycle RMSE gap over Linear Regression confirms the degradation pattern is non-linear.
+    </div>
+  </div>
+
+  <!-- ============ TEST BENCH ============ -->
+  <div id="view-tb" class="hidden">
+    <div class="tbcard" style="border:1px dashed var(--line);background:transparent">
+      <h3>Live telemetry feed <span class="sim">future scope</span></h3>
+      <div class="desc">In production, engines would stream sensor readings here continuously and the planner would update in real time. This build runs on the recorded held-out test fleet; the two tools below demonstrate live inference on new input.</div>
+      <div class="ctrl" style="margin-bottom:0;opacity:.5">
+        <input class="act" style="flex:1;padding:7px 10px;background:var(--bg)" placeholder="Live feed endpoint (not connected in this build)" disabled>
+        <button class="act" disabled>Connect</button>
+      </div>
+    </div>
+    <div class="tbcard">
+      <h3>Check an engine</h3>
+      <div class="desc">Run a specific engine's real sensor data through the model. Because these are held-out test engines with known outcomes, the result is compared against the actual RUL.</div>
+      <div class="ctrl" style="margin-bottom:6px">
+        <select id="mp-engine" class="act" style="padding:7px 10px"></select>
+        <button class="act primary" onclick="manualPredict()">Get prediction</button>
+      </div>
+
+      <div id="mp-res" class="hidden" style="margin-top:14px">
+        <!-- headline: predicted vs actual -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px">
+          <div class="metric"><div class="label">Predicted RUL</div><div class="val" id="mp-pred">—<span class="unit"> cyc</span></div></div>
+          <div class="metric"><div class="label">Actual RUL</div><div class="val" id="mp-actual">—<span class="unit"> cyc</span></div></div>
+          <div class="metric"><div class="label">Error</div><div class="val" id="mp-err">—<span class="unit"> cyc</span></div></div>
+        </div>
+        <!-- action -->
+        <div id="mp-action" class="actionbox ok" style="margin-bottom:12px">—</div>
+        <!-- key sensors -->
+        <div class="chartcard" style="margin-bottom:0">
+          <div class="h">Key sensor readings (latest cycle)</div>
+          <div id="mp-sensors" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;font-size:13px"></div>
+        </div>
+        <div style="font-size:11px;color:var(--faint);margin-top:10px" id="mp-meta"></div>
+      </div>
+    </div>
+
+    <div class="tbcard">
+      <h3>Incoming engine feed <span class="sim">simulated data</span></h3>
+      <div class="desc">A new engine transmitting live, degrading over time — shows how the planner would react to a continuous feed. Data is generated for demonstration.</div>
+      <div class="ctrl" style="margin-bottom:10px">
+        <button class="act primary" id="sbtn" onclick="toggleStream()">▶ Start feed</button>
+        <button class="act" onclick="resetStream()">↺ Reset</button>
+      </div>
+      <div class="chartbox" style="height:130px"><canvas id="streamChart"></canvas></div>
+      <div class="streamline">live life left: <b id="s-rul">—</b> cycles · feed cycle <b id="s-cyc">0</b></div>
+    </div>
+  </div>
+
+  <div class="foot" id="foot">
+    Predictions from the model (<span id="foot-model">LightGBM</span>) via the serving API. Risk bands: critical ≤20, watch &lt;60, healthy ≥60 cycles. This build runs on the held-out test fleet as a demonstration of the operator-facing layer; in production the same interface would update as live engine telemetry arrives. Model validation RMSE <span id="foot-rmse">15.55</span>.
+  </div>
+</div>
+
+<script src="fleet-data.js"></script>
+<script>
+const CRIT_MAX=20, MOD_MAX=60, CLIP=125;
+function riskOf(r){ if(r<=CRIT_MAX) return 'crit'; if(r<MOD_MAX) return 'watch'; return 'ok'; }
+function riskLabel(r){ return {ok:'Healthy',watch:'Watch',crit:'Critical'}[r]; }
+
+// action language — the business layer
+function actionFor(rul, status){
+  if(status==='crit') return {text:'Schedule maintenance now', lead:`fails in ~${rul} cycles if unaddressed`};
+  if(status==='watch') return {text:'Plan maintenance & order parts', lead:`window: within ~${rul} cycles`};
+  return {text:'No action — monitor', lead:`~${rul} cycles of life remaining`};
+}
+
+let API_LIVE=false;
+async function predictRUL(engine, revealed){
+  const payload={ id:engine.id, features:engine.feats, ground_truth_rul:engine.trueRUL };
+  try{
+    const r=await fetch(API_BASE+'/predict',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    if(!r.ok) throw 0;
+    const d=await r.json(); API_LIVE=true;
+    return { rul:Math.round(d.predicted_rul), status:riskOf(d.predicted_rul), src:'api',
+             latency:d.latency_ms, version:d.model_version };
+  }catch(e){
+    API_LIVE=false;
+    let raw=Math.min((engine.run+engine.trueRUL)-revealed, CLIP);
+    const rul=Math.max(0,Math.round(raw));
+    return { rul, status:riskOf(rul), src:'mock', latency:null, version:null };
+  }
+}
+function setConn(){ const c=document.getElementById('conn');
+  if(API_LIVE){c.className='conn live';c.textContent='● live · API';} else {c.className='conn mock';c.textContent='● mock data';} }
+
+const clkOffset=0;
+function speedMs(){ return 1150-(+document.getElementById('speed').value)*180; }
+
+async function renderPlanner(){
+  const results=[];
+  for(const e of FLEET){
+    const p=await predictRUL(e, e.run-clkOffset);
+    results.push({e,rul:p.rul,status:p.status});
+  }
+  results.sort((a,b)=>a.rul-b.rul);
+
+  const crit=results.filter(r=>r.status==='crit');
+  const watch=results.filter(r=>r.status==='watch');
+  const ok=results.filter(r=>r.status==='ok');
+  const ready=results.length-crit.length;
+  const avg=Math.round(results.reduce((s,r)=>s+r.rul,0)/results.length);
+
+  // banner
+  const banner=document.getElementById('banner');
+  if(crit.length>0){
+    banner.className='banner crit';
+    banner.querySelector('.icon').textContent='⚠';
+    document.getElementById('banner-txt').textContent=`${crit.length} engine${crit.length>1?'s':''} need maintenance now`;
+    const soonest=crit[0];
+    document.getElementById('banner-sub').textContent=`Most urgent: Engine ${soonest.e.id}, ~${soonest.rul} cycles of life left`;
+  } else {
+    banner.className='banner ok';
+    banner.querySelector('.icon').textContent='✓';
+    document.getElementById('banner-txt').textContent='No engines require immediate maintenance';
+    document.getElementById('banner-sub').textContent=`${watch.length} to plan for, ${ok.length} healthy`;
+  }
+
+  // metrics
+  document.getElementById('m-ready').textContent=`${ready} / ${results.length}`;
+  document.getElementById('m-act').textContent=crit.length;
+  document.getElementById('m-avg').innerHTML=avg+'<span class="unit"> cyc</span>';
+
+  // grouped lists
+  document.getElementById('groups').innerHTML =
+    groupHtml('Act now', 'crit', crit) +
+    groupHtml('Plan soon', 'watch', watch) +
+    groupHtml('Healthy', 'ok', ok);
+
+  setConn();
+  document.getElementById('foot-model').textContent=MODEL_INFO.name;
+  document.getElementById('foot-rmse').textContent=MODEL_INFO.rmse;
+}
+
+const PREVIEW_N = 4;  // how many engines to show before "show all"
+function rowHtml({e,rul,status}){
+  const a=actionFor(rul,status);
+  return `<div class="row" onclick="openDetail(${e.id})">
+    <div class="info"><div class="name">Engine ${e.id}</div><div class="sub">${e.run} cycles run</div></div>
+    <div class="action">${a.text}<div class="lead">${a.lead}</div></div>
+    <div class="rul ${status}">${rul} cyc</div>
+  </div>`;
+}
+function groupHtml(title, cls, items){
+  if(!items.length){
+    return `<div class="group">
+      <div class="grouphead"><span class="dot ${cls}"></span><span class="gt">${title}</span><span class="gc">0</span></div>
+      <div class="list empty">None</div>
+    </div>`;
+  }
+  const preview = items.slice(0,PREVIEW_N).map(rowHtml).join('');
+  const rest = items.slice(PREVIEW_N).map(rowHtml).join('');
+  const hasMore = items.length>PREVIEW_N;
+  const toggle = hasMore
+    ? `<div class="showall" onclick="toggleGroup('${cls}',event)"><span id="lbl-${cls}">Show all ${items.length}</span> <span id="arw-${cls}">▾</span></div>`
+    : '';
+  return `<div class="group">
+    <div class="grouphead"><span class="dot ${cls}"></span><span class="gt">${title}</span><span class="gc">${items.length}</span></div>
+    <div class="list">
+      ${preview}
+      <div id="more-${cls}" class="hidden">${rest}</div>
+    </div>
+    ${toggle}
+  </div>`;
+}
+function toggleGroup(cls, ev){
+  ev.stopPropagation();
+  const more=document.getElementById('more-'+cls);
+  const lbl=document.getElementById('lbl-'+cls);
+  const arw=document.getElementById('arw-'+cls);
+  const hidden=more.classList.toggle('hidden');
+  if(hidden){ lbl.textContent='Show all '+(more.querySelectorAll('.row').length+PREVIEW_N); arw.textContent='▾'; }
+  else{ lbl.textContent='Show less'; arw.textContent='▴'; }
+}
+
+// Time-advance removed: on the live model each engine has one fixed feature
+// row, so the prediction is its current real status. Refresh re-queries the API.
+
+// detail
+let rulChart=null, sensorChart=null;
+async function openDetail(id){
+  const e=FLEET.find(x=>x.id===id);
+  document.getElementById('planner-panel').classList.add('hidden');
+  document.getElementById('detail-panel').classList.remove('hidden');
+  document.getElementById('d-name').textContent='Engine '+id;
+  document.getElementById('d-run').textContent=e.run;
+  const p=await predictRUL(e, e.run-clkOffset);
+  document.getElementById('d-rul').innerHTML=p.rul+'<span class="unit"> cyc</span>';
+  const a=actionFor(p.rul,p.status);
+  const box=document.getElementById('d-action'); box.className='actionbox '+p.status;
+  box.innerHTML=a.text+'<div class="sub">'+a.lead+'</div>';
+  const cyc=e.tr.map(t=>t[0]);
+  const ruls=e.tr.map(t=>Math.max(0,Math.min(CLIP,(e.run+e.trueRUL)-t[0])));
+  drawRul(cyc,ruls);
+  drawSensor(e.tr.map(t=>t[0]),e.tr.map(t=>t[1]),e.tr.map(t=>t[2]));
+}
+function closeDetail(){ document.getElementById('detail-panel').classList.add('hidden'); document.getElementById('planner-panel').classList.remove('hidden'); }
+const GRID='#2a2e34',TICK='#9aa3ad';
+function opts(){return{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:GRID},ticks:{color:TICK,maxTicksLimit:6,font:{size:10}}},y:{grid:{color:GRID},ticks:{color:TICK,font:{size:10}}}}};}
+function drawRul(labels,data){ if(rulChart)rulChart.destroy(); const o=opts(); o.scales.y.suggestedMin=0;o.scales.y.suggestedMax=CLIP;
+  rulChart=new Chart(document.getElementById('rulChart'),{type:'line',data:{labels,datasets:[
+    {data,borderColor:'#6b78d6',backgroundColor:'rgba(107,120,214,.12)',fill:true,tension:.25,pointRadius:0,borderWidth:2},
+    {data:labels.map(()=>CRIT_MAX),borderColor:'#e05650',borderDash:[5,4],pointRadius:0,borderWidth:1}]},options:o}); }
+function drawSensor(labels,s11,s4){ if(sensorChart)sensorChart.destroy(); const o=opts();
+  sensorChart=new Chart(document.getElementById('sensorChart'),{type:'line',data:{labels,datasets:[
+    {data:s11,borderColor:'#46b862',pointRadius:0,borderWidth:2,yAxisID:'y'},
+    {data:s4,borderColor:'#d99a2b',pointRadius:0,borderWidth:2,yAxisID:'y2'}]},
+    options:{...o,scales:{x:o.scales.x,y:{position:'left',grid:{color:GRID},ticks:{color:'#46b862',font:{size:9}}},y2:{position:'right',grid:{display:false},ticks:{color:'#d99a2b',font:{size:9}}}}}}); }
+
+// tabs
+function showTab(t){
+  ['ops','model','tb'].forEach(v=>{
+    document.getElementById('view-'+v).classList.toggle('hidden', t!==v);
+    document.getElementById('tab-'+v).classList.toggle('active', t===v);
+  });
+}
+
+// manual predict
+const sel=document.getElementById('mp-engine');
+FLEET.forEach(e=>{const o=document.createElement('option');o.value=e.id;o.textContent='Engine '+e.id+' ('+e.run+' cyc run)';sel.appendChild(o);});
+async function manualPredict(){
+  const e=FLEET.find(x=>x.id===+sel.value);
+  const p=await predictRUL(e,e.run);
+  document.getElementById('mp-res').classList.remove('hidden');
+
+  // predicted / actual / error
+  document.getElementById('mp-pred').innerHTML=p.rul+'<span class="unit"> cyc</span>';
+  document.getElementById('mp-actual').innerHTML=e.trueRUL+'<span class="unit"> cyc</span>';
+  const err=Math.abs(p.rul-e.trueRUL);
+  const errEl=document.getElementById('mp-err');
+  errEl.innerHTML=err+'<span class="unit"> cyc</span>';
+  errEl.className='val '+(err<=15?'ok':err<=30?'watch':'crit');
+
+  // action box
+  const a=actionFor(p.rul,p.status);
+  const box=document.getElementById('mp-action'); box.className='actionbox '+p.status;
+  box.innerHTML=a.text+' — <span style="font-weight:400;color:var(--muted)">'+a.lead+'</span>';
+
+  // key sensor readings (from the feature payload we sent)
+  const keys=[['s11','Sensor 11'],['s4','Sensor 4'],['s12','Sensor 12'],['s7','Sensor 7'],['s15','Sensor 15'],['s21','Sensor 21']];
+  document.getElementById('mp-sensors').innerHTML=keys.map(([k,label])=>
+    `<div style="background:var(--card2);border-radius:8px;padding:8px 10px">
+       <div style="font-size:11px;color:var(--muted)">${label}</div>
+       <div style="font-weight:600;font-variant-numeric:tabular-nums">${(+e.feats[k]).toFixed(2)}</div>
+     </div>`).join('');
+
+  // meta line
+  const meta = p.src==='api'
+    ? `Live inference · model v${p.version} · responded in ${p.latency ? p.latency.toFixed(0) : '?'} ms · compared against known test outcome`
+    : `Mock estimate (API offline) · start the backend for live inference`;
+  document.getElementById('mp-meta').textContent=meta;
+}
+
+// stream
+let sClk=0,sTimer=null,sPts=[],streamChart=null; const S_TOTAL=150;
+function drawStream(){ if(!streamChart){const o=opts();o.scales.y.suggestedMin=0;o.scales.y.suggestedMax=CLIP;o.animation=false;
+  streamChart=new Chart(document.getElementById('streamChart'),{type:'line',data:{labels:[],datasets:[
+    {data:[],borderColor:'#6b78d6',backgroundColor:'rgba(107,120,214,.1)',fill:true,pointRadius:0,borderWidth:2,tension:.2},
+    {data:[],borderColor:'#e05650',borderDash:[5,4],pointRadius:0,borderWidth:1}]},options:o});}
+  streamChart.data.labels=sPts.map(p=>p.c);streamChart.data.datasets[0].data=sPts.map(p=>p.r);
+  streamChart.data.datasets[1].data=sPts.map(()=>CRIT_MAX);streamChart.update(); }
+function streamTick(){ sClk+=3; let raw=Math.min(CLIP,150-sClk*0.95+(Math.random()*6-3)); const rul=Math.max(0,Math.round(raw));
+  sPts.push({c:sClk,r:rul}); document.getElementById('s-rul').textContent=rul; document.getElementById('s-cyc').textContent=sClk;
+  drawStream(); if(sClk>=S_TOTAL) stopStream(); }
+function startStream(){ if(sTimer)return; sTimer=setInterval(streamTick,450); document.getElementById('sbtn').innerHTML='⏸ Pause'; }
+function stopStream(){ clearInterval(sTimer); sTimer=null; document.getElementById('sbtn').innerHTML='▶ Start feed'; }
+function toggleStream(){ sTimer?stopStream():startStream(); }
+function resetStream(){ stopStream(); sClk=0;sPts=[]; document.getElementById('s-rul').textContent='—'; document.getElementById('s-cyc').textContent='0'; if(streamChart){streamChart.destroy();streamChart=null;} }
+
+// Live model info from the registry (updates the Model tab banner)
+async function loadModelInfo(){
+  try{
+    const r=await fetch(API_BASE+'/model_info');
+    if(!r.ok) throw 0;
+    const d=await r.json();
+    // version is live from the registry; algorithm label is the known champion algo
+    document.getElementById('mv-headline').textContent = 'LightGBM v'+d.version;
+    document.getElementById('mv-sub').innerHTML =
+      'Registered as <code>'+d.registered_model_name+'</code> · alias <b>'+d.alias+'</b> · version '+d.version+' · '+d.feature_count+' features · live from registry';
+  }catch(e){
+    // keep the hardcoded fallback text already in the HTML
+  }
+}
+loadModelInfo();
+renderPlanner();
+</script>
+</body>
+</html>
