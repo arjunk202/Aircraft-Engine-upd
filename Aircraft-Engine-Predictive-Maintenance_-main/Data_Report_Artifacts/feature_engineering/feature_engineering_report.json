@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-13T14:09:54.486872+00:00",
+  "generated_at": "2026-09-28T10:12:26.831681+00:00",
   "steps_applied": [
     "Dropped 5 constant feature(s): ['setting3', 's1', 's10', 's18', 's19']",
     "Dropped 1 redundant feature(s): [{'feature_a': 's9', 'feature_b': 's14', 'correlation': 0.9591}]",

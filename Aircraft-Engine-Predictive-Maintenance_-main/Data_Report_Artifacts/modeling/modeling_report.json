@@ -1,7 +1,7 @@
 {
-  "mlflow_tracking_uri": "sqlite:///D:/Aircraft-Engine-upd/Aircraft-Engine-Predictive-Maintenance_-main/mlflow.db",
+  "mlflow_tracking_uri": "sqlite:///C:/Users/arjun/OneDrive/Pictures/Aircraft-Engine-Predictive-Maintenance_-main/Aircraft-Engine-Predictive-Maintenance_-main/mlflow.db",
   "mlflow_experiment": "aircraft_engine_rul_prediction",
-  "parent_run_id": "c7a1d40863c245289f4c4931f25bd0b2",
+  "parent_run_id": "a6820d4b45ee4b56aae76fb309a7e3dd",
   "feature_count": 67,
   "train_rows": 15259,
   "val_rows": 3472,
@@ -9,11 +9,11 @@
   "leaderboard": [
     {
       "run_name": "lightgbm",
-      "run_id": "cc829e63b4314007bdbca14b6f339526",
+      "run_id": "28baef7f90a74ff19cdf2f836510e0ee",
       "flavor": "lightgbm",
-      "val_rmse": 15.546513525957844,
-      "val_mae": 10.97639206224888,
-      "val_r2": 0.8609564059057119,
+      "val_rmse": 15.543526288439317,
+      "val_mae": 11.033534876414862,
+      "val_r2": 0.8610098347771151,
       "params": {
         "n_estimators": 800,
         "max_depth": -1,
@@ -31,11 +31,11 @@
     },
     {
       "run_name": "hist_gradient_boosting",
-      "run_id": "cfe52792907346c8944ddf17363e5af9",
+      "run_id": "9f9424e7ed2444dabb579eb2cf3a57f4",
       "flavor": "sklearn",
-      "val_rmse": 15.639154063493523,
-      "val_mae": 11.033715421051882,
-      "val_r2": 0.859294367409009,
+      "val_rmse": 15.678126900686122,
+      "val_mae": 11.09224195055783,
+      "val_r2": 0.8585922155678608,
       "params": {
         "max_iter": 500,
         "max_depth": 8,
@@ -48,7 +48,7 @@
     },
     {
       "run_name": "xgboost",
-      "run_id": "6206893718974a8f81292ec5f4ae6450",
+      "run_id": "5c15a2fb186f4263b34b941baf12ee03",
       "flavor": "xgboost",
       "val_rmse": 15.702216916374171,
       "val_mae": 11.268174171447754,
@@ -69,11 +69,11 @@
     },
     {
       "run_name": "random_forest",
-      "run_id": "f93707d6fb2a426a83f3965fab2d7b14",
+      "run_id": "13008b2c196741ccb81b26e2bad14f4d",
       "flavor": "sklearn",
-      "val_rmse": 15.815134382624707,
-      "val_mae": 11.26754954910408,
-      "val_r2": 0.856109957745759,
+      "val_rmse": 15.815098392926844,
+      "val_mae": 11.26749684000043,
+      "val_r2": 0.8561106126315323,
       "params": {
         "n_estimators": 200,
         "max_depth": 15,
@@ -84,11 +84,11 @@
     },
     {
       "run_name": "linear_regression",
-      "run_id": "2bfb99555eb346339fa8da734d165c8e",
+      "run_id": "4853da17d79f44f097d47fef3f398b78",
       "flavor": "sklearn",
-      "val_rmse": 18.687646587862208,
-      "val_mae": 15.197104468334652,
-      "val_r2": 0.7990934056674398,
+      "val_rmse": 18.687646589127322,
+      "val_mae": 15.197104469503259,
+      "val_r2": 0.799093405640238,
       "params": {
         "fit_intercept": true,
         "scaler": "StandardScaler(train-only, bundled in pipeline)"
@@ -96,15 +96,15 @@
     }
   ],
   "best_model": "lightgbm",
-  "best_model_run_id": "cc829e63b4314007bdbca14b6f339526",
+  "best_model_run_id": "28baef7f90a74ff19cdf2f836510e0ee",
   "test_set_evaluation": {
     "engines_scored": 100,
-    "raw_test_rmse": 18.286191058667196,
-    "raw_test_mae": 13.540976794600818,
-    "clipped_test_rmse": 17.206696740459453,
-    "clipped_test_mae": 12.471585991297236
+    "raw_test_rmse": 18.548250530854933,
+    "raw_test_mae": 13.697014546976943,
+    "clipped_test_rmse": 17.40610347969494,
+    "clipped_test_mae": 12.627014546976943
   },
   "registered_model_name": "aircraft_engine_rul_model",
-  "registered_model_version": 4,
+  "registered_model_version": 1,
   "registered_model_alias": "champion"
 }

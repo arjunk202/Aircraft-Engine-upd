@@ -48,6 +48,16 @@ supplied, `rul_risk_classification_total{predicted_category,actual_category}`
 records one cell of a confusion matrix, from which Grafana derives precision/
 recall per category via PromQL (see monitoring/README.md).
 
+PREDICTION HISTORY (SQLite)
+---------------------------
+Every successful /predict call is also appended to `predictions.db` (table
+`predictions`) so model performance can be analysed historically with plain
+SQL, independent of Prometheus' retention window. Prometheus/Grafana remain
+the live, short-term view; this table is the durable record. Logging is
+best-effort: a database failure is logged and never fails the prediction.
+`ground_truth_rul` (when supplied) is stored alongside the prediction, so
+error and risk-category accuracy can be computed per model version later.
+
 Run:
     uvicorn serving_api:app --host 127.0.0.1 --port 8001
 """
@@ -55,8 +65,10 @@ Run:
 from __future__ import annotations
 
 import logging
+import sqlite3
 import time
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, closing
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
@@ -74,6 +86,74 @@ ROOT_DIR = Path(__file__).resolve().parent
 MLFLOW_TRACKING_URI = f"sqlite:///{(ROOT_DIR / 'mlflow.db').as_posix()}"
 REGISTERED_MODEL_NAME = "aircraft_engine_rul_model"
 MODEL_ALIAS = "champion"
+PREDICTIONS_DB_PATH = ROOT_DIR / "predictions.db"
+
+_CREATE_PREDICTIONS_SQL = """
+CREATE TABLE IF NOT EXISTS predictions (
+    id                 INTEGER PRIMARY KEY AUTOINCREMENT,
+    ts                 TEXT    NOT NULL,   -- UTC ISO-8601 timestamp of the request
+    engine_id          INTEGER NOT NULL,
+    model_name         TEXT    NOT NULL,
+    model_version      TEXT    NOT NULL,
+    predicted_rul      REAL    NOT NULL,
+    predicted_category TEXT    NOT NULL,
+    latency_ms         REAL,
+    ground_truth_rul   REAL,               -- NULL until the true RUL is known
+    actual_category    TEXT,
+    abs_error          REAL
+);
+CREATE INDEX IF NOT EXISTS idx_predictions_engine_ts ON predictions (engine_id, ts);
+CREATE INDEX IF NOT EXISTS idx_predictions_model_ts  ON predictions (model_version, ts);
+"""
+
+
+def _db_connect() -> sqlite3.Connection:
+    # timeout: wait up to 5s if another request holds the write lock.
+    con = sqlite3.connect(PREDICTIONS_DB_PATH, timeout=5)
+    # WAL lets readers (analysis queries) run while the API is writing.
+    con.execute("PRAGMA journal_mode=WAL")
+    return con
+
+
+def _init_predictions_db() -> None:
+    with closing(_db_connect()) as con:
+        with con:
+            con.executescript(_CREATE_PREDICTIONS_SQL)
+    logger.info("Prediction history table ready at %s", PREDICTIONS_DB_PATH)
+
+
+def _log_prediction(
+    engine_id: int,
+    predicted_rul: float,
+    predicted_category: str,
+    latency_ms: float,
+    ground_truth_rul: Optional[float],
+) -> None:
+    """Best-effort append of one prediction to SQLite; never raises."""
+    try:
+        actual_category = _risk_category(ground_truth_rul) if ground_truth_rul is not None else None
+        abs_error = abs(predicted_rul - ground_truth_rul) if ground_truth_rul is not None else None
+        with closing(_db_connect()) as con:
+            with con:
+                con.execute(
+                    "INSERT INTO predictions (ts, engine_id, model_name, model_version, predicted_rul,"
+                    " predicted_category, latency_ms, ground_truth_rul, actual_category, abs_error)"
+                    " VALUES (?,?,?,?,?,?,?,?,?,?)",
+                    (
+                        datetime.now(timezone.utc).isoformat(),
+                        engine_id,
+                        REGISTERED_MODEL_NAME,
+                        str(state.version),
+                        predicted_rul,
+                        predicted_category,
+                        latency_ms,
+                        ground_truth_rul,
+                        actual_category,
+                        abs_error,
+                    ),
+                )
+    except Exception:
+        logger.exception("Failed to log prediction for engine id=%s to SQLite", engine_id)
 
 # ---------------------------------------------------------------------
 # Prometheus metrics (scraped by Prometheus, visualized in Grafana)
@@ -172,6 +252,7 @@ def _load_champion() -> None:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     _load_champion()
+    _init_predictions_db()
     yield
 
 
@@ -244,6 +325,8 @@ def predict(req: PredictRequest):
             PREDICTION_ABS_ERROR.observe(abs(predicted_rul - req.ground_truth_rul))
             actual_category = _risk_category(req.ground_truth_rul)
             RISK_CLASSIFICATION.labels(predicted_category=predicted_category, actual_category=actual_category).inc()
+
+        _log_prediction(req.id, predicted_rul, predicted_category, latency * 1000, req.ground_truth_rul)
 
         return PredictResponse(
             id=req.id, predicted_rul=predicted_rul, predicted_risk_category=predicted_category,

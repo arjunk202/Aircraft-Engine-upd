@@ -3,107 +3,11 @@ I
 )
 __dummy"
 __dummy_idJaircraft_engine_pm
-‡®öÓèÏ‰ï‡®öÓèÏ‰ï
+¨ûèÕğßÚŸ¨ûèÕğßÚŸ
 |
 \
 engine8Aircraft engine unit from the NASA C-MAPSS FD001 dataset"idJaircraft_engine_pm
-‡®öÓ Ì’ï±®öÓğ®˜ò1"$0fbbd11a-f140-4004-a776-993c9c3cdd2b*¶¦÷Ó ·Í72Í
-’
-engine_raw_sensors_trainaircraft_engine_pmengine"	
-cycle"
-setting1"
-setting2"
-setting3"
-s1"
-s2"
-s3"
-s4"
-s5"
-s6"
-s7"
-s8"
-s9"
-s10"
-s11"
-s12"
-s13"
-s14"
-s15"
-s16"
-s17"
-s18"
-s19"
-s20"
-s21*
-splittrain*
-stagedata_validation2€†°–:«event_timestamp*created_timestampZdata/engine_train.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_train_source’‡®öÓÃİ{"‡®öÓàğñî@b
-id’latest6
-‡®öÓ¨Ø›ï³¦÷Ó¸˜­×
-³ Ç½¨ÊË©­¦÷Ó02Å
-Š
-engine_raw_sensors_valaircraft_engine_pmengine"	
-cycle"
-setting1"
-setting2"
-setting3"
-s1"
-s2"
-s3"
-s4"
-s5"
-s6"
-s7"
-s8"
-s9"
-s10"
-s11"
-s12"
-s13"
-s14"
-s15"
-s16"
-s17"
-s18"
-s19"
-s20"
-s21*
-splitval*
-stagedata_validation2€†°–:§event_timestamp*created_timestampZdata/engine_val.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_val_source’‡®öÓ€Úå{"‡®öÓÈ¨âî@b
-id’latest6
-‡®öÓ…ãï´¦÷ÓˆÙÜº
-³ Ç½øĞÎ©­¦÷Ó02É
-
-engine_raw_sensors_testaircraft_engine_pmengine"	
-cycle"
-setting1"
-setting2"
-setting3"
-s1"
-s2"
-s3"
-s4"
-s5"
-s6"
-s7"
-s8"
-s9"
-s10"
-s11"
-s12"
-s13"
-s14"
-s15"
-s16"
-s17"
-s18"
-s19"
-s20"
-s21*
-splittest*
-stagedata_validation2€†°–:©event_timestamp*created_timestampZdata/engine_test.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_test_source’‡®öÓĞÔì{"‡®öÓğ—ÿî@b
-id’latest6
-‡®öÓÀˆ°ğ´¦÷Óğƒ³Ï
-³ Ç½¨»Ğ©­¦÷Ó02•
+¨ûèÕàÒîŸ¨ûèÕàÒîŸ1"$77a27063-ea0b-48f1-8684-3c05b29f16f0*·ûèÕ°÷ñr2”
 
 Ú	
 engine_engineered_features_valaircraft_engine_pmengine"	
@@ -193,12 +97,170 @@ s2_mean_20"
 
 s3_mean_20"
 	s3_std_20"
-RUL*
-splitval*
-stagefeature_engineering2€†°–:°event_timestamp*created_timestampZdata/engineered_val.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_val_source’Ú¤÷ÓÀ·ê"Ú¤÷ÓèªÍ‘@b
+RUL*
+stagefeature_engineering*
+splitval2€†°–:°event_timestamp*created_timestampZdata/engineered_val.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_val_source’§ûèÕ¨¨Ù°"¨ûèÕ˜úË›@b
+id’latest5
+¨ûèÕàÒîŸµûèÕ¸ÚÁR
+´õ¸¿€¯¡Ë©ûèÕ02Æ
+‹
+engine_raw_sensors_valaircraft_engine_pmengine"	
+cycle"
+setting1"
+setting2"
+setting3"
+s1"
+s2"
+s3"
+s4"
+s5"
+s6"
+s7"
+s8"
+s9"
+s10"
+s11"
+s12"
+s13"
+s14"
+s15"
+s16"
+s17"
+s18"
+s19"
+s20"
+s21*
+stagedata_validation*
+splitval2€†°–:¨event_timestamp*created_timestampZdata/engine_val.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_val_source’§ûèÕˆıè¬"¨ûèÕ˜úË›@b
 id’latest6
-Ú¤÷Óˆÿâ’´¦÷ÓÀõÚÂ
-³ Ç½¸†Ò©­¦÷Ó02
+¨ûèÕàÒîŸµûèÕğ‹…›
+´õ¸¿€¯¡Ë©ûèÕ02
+
+Õ	
+engine_engineered_features_testaircraft_engine_pmengine"	
+cycle"
+setting1"
+setting2"
+s2"
+s3"
+s4"
+s5"
+s6"
+s7"
+s8"
+s9"
+s11"
+s12"
+s13"
+s15"
+s16"
+s17"
+s20"
+s21"
+
+s11_mean_5"
+	s11_std_5"
+
+s12_mean_5"
+	s12_std_5"
+	s4_mean_5"
+s4_std_5"
+	s7_mean_5"
+s7_std_5"
+
+s15_mean_5"
+	s15_std_5"
+
+s21_mean_5"
+	s21_std_5"
+
+s20_mean_5"
+	s20_std_5"
+
+s13_mean_5"
+	s13_std_5"
+	s8_mean_5"
+s8_std_5"
+
+s17_mean_5"
+	s17_std_5"
+	s2_mean_5"
+s2_std_5"
+	s3_mean_5"
+s3_std_5"
+s11_mean_20"
+
+s11_std_20"
+s12_mean_20"
+
+s12_std_20"
+
+s4_mean_20"
+	s4_std_20"
+
+s7_mean_20"
+	s7_std_20"
+s15_mean_20"
+
+s15_std_20"
+s21_mean_20"
+
+s21_std_20"
+s20_mean_20"
+
+s20_std_20"
+s13_mean_20"
+
+s13_std_20"
+
+s8_mean_20"
+	s8_std_20"
+s17_mean_20"
+
+s17_std_20"
+
+s2_mean_20"
+	s2_std_20"
+
+s3_mean_20"
+	s3_std_20*
+stagefeature_engineering*
+splittest2€†°–:²event_timestamp*created_timestampZdata/engineered_test.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_test_source’§ûèÕ¨¨Ù°"¨ûèÕ˜úË›@b
+id’latest6
+¨ûèÕğË«£µûèÕø¡Ùí
+´õ¸¿€¯¡Ë©ûèÕ02É
+
+engine_raw_sensors_testaircraft_engine_pmengine"	
+cycle"
+setting1"
+setting2"
+setting3"
+s1"
+s2"
+s3"
+s4"
+s5"
+s6"
+s7"
+s8"
+s9"
+s10"
+s11"
+s12"
+s13"
+s14"
+s15"
+s16"
+s17"
+s18"
+s19"
+s20"
+s21*
+stagedata_validation*
+splittest2€†°–:ªevent_timestamp*created_timestampZdata/engine_test.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_test_source’§ûèÕˆıè¬"¨ûèÕ˜úË›@b
+id’latest5
+¨ûèÕğË«£¶ûèÕ€ÛÆ$
+´õ¸¿€¯¡Ë©ûèÕ02
 
 â	
  engine_engineered_features_trainaircraft_engine_pmengine"	
@@ -288,130 +350,13 @@ s2_mean_20"
 
 s3_mean_20"
 	s3_std_20"
-RUL*
-splittrain*
-stagefeature_engineering2€†°–:´event_timestamp*created_timestampZdata/engineered_train.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_train_source’Ú¤÷ÓØÇâ"Ú¤÷ÓÀçÈ’@b
+RUL*
+stagefeature_engineering*
+splittrain2€†°–:´event_timestamp*created_timestampZdata/engineered_train.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_train_source’§ûèÕ¨¨Ù°"¨ûèÕ˜úË›@b
 id’latest6
-Ú¤÷Óğ˜Ú“µ¦÷Ó¨Ììÿ
-³ Ç½ºÓ©­¦÷Ó02
-
-Õ	
-engine_engineered_features_testaircraft_engine_pmengine"	
-cycle"
-setting1"
-setting2"
-s2"
-s3"
-s4"
-s5"
-s6"
-s7"
-s8"
-s9"
-s11"
-s12"
-s13"
-s15"
-s16"
-s17"
-s20"
-s21"
-
-s11_mean_5"
-	s11_std_5"
-
-s12_mean_5"
-	s12_std_5"
-	s4_mean_5"
-s4_std_5"
-	s7_mean_5"
-s7_std_5"
-
-s15_mean_5"
-	s15_std_5"
-
-s21_mean_5"
-	s21_std_5"
-
-s20_mean_5"
-	s20_std_5"
-
-s13_mean_5"
-	s13_std_5"
-	s8_mean_5"
-s8_std_5"
-
-s17_mean_5"
-	s17_std_5"
-	s2_mean_5"
-s2_std_5"
-	s3_mean_5"
-s3_std_5"
-s11_mean_20"
-
-s11_std_20"
-s12_mean_20"
-
-s12_std_20"
-
-s4_mean_20"
-	s4_std_20"
-
-s7_mean_20"
-	s7_std_20"
-s15_mean_20"
-
-s15_std_20"
-s21_mean_20"
-
-s21_std_20"
-s20_mean_20"
-
-s20_std_20"
-s13_mean_20"
-
-s13_std_20"
-
-s8_mean_20"
-	s8_std_20"
-s17_mean_20"
-
-s17_std_20"
-
-s2_mean_20"
-	s2_std_20"
-
-s3_mean_20"
-	s3_std_20*
-splittest*
-stagefeature_engineering2€†°–:²event_timestamp*created_timestampZdata/engineered_test.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_test_source’Ú¤÷Ó ƒñ"Ú¤÷Óø×Õ’@b
-id’latest5
-Ú¤÷Ó˜ŒÉ”¶¦÷ÓÀ–7
-³ Ç½€æÔ©­¦÷Ó0RÂ	
-Ì
-,feast.infra.online_stores.sqlite.SqliteTable"›
-eD:\Aircraft-Engine-upd\Aircraft-Engine-Predictive-Maintenance_-main\feature_repo\data\online_store.db2aircraft_engine_pm_engine_engineered_features_test
-Í
-,feast.infra.online_stores.sqlite.SqliteTable"œ
-eD:\Aircraft-Engine-upd\Aircraft-Engine-Predictive-Maintenance_-main\feature_repo\data\online_store.db3aircraft_engine_pm_engine_engineered_features_train
-Ë
-,feast.infra.online_stores.sqlite.SqliteTable"š
-eD:\Aircraft-Engine-upd\Aircraft-Engine-Predictive-Maintenance_-main\feature_repo\data\online_store.db1aircraft_engine_pm_engine_engineered_features_val
-Ä
-,feast.infra.online_stores.sqlite.SqliteTable"“
-eD:\Aircraft-Engine-upd\Aircraft-Engine-Predictive-Maintenance_-main\feature_repo\data\online_store.db*aircraft_engine_pm_engine_raw_sensors_test
-Å
-,feast.infra.online_stores.sqlite.SqliteTable"”
-eD:\Aircraft-Engine-upd\Aircraft-Engine-Predictive-Maintenance_-main\feature_repo\data\online_store.db+aircraft_engine_pm_engine_raw_sensors_train
-Ã
-,feast.infra.online_stores.sqlite.SqliteTable"’
-eD:\Aircraft-Engine-upd\Aircraft-Engine-Predictive-Maintenance_-main\feature_repo\data\online_store.db)aircraft_engine_pm_engine_raw_sensors_valb¼event_timestamp*created_timestampZdata/engine_val.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_val_sourceªaircraft_engine_pm’‡®öÓ€Úå{"‡®öÓÈ¨âîbÀevent_timestamp*created_timestampZdata/engine_train.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_train_sourceªaircraft_engine_pm’‡®öÓÃİ{"‡®öÓàğñîb¾event_timestamp*created_timestampZdata/engine_test.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_test_sourceªaircraft_engine_pm’‡®öÓĞÔì{"‡®öÓğ—ÿîbÅevent_timestamp*created_timestampZdata/engineered_val.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_val_sourceªaircraft_engine_pm’Ú¤÷ÓÀ·ê"Ú¤÷ÓèªÍ‘bÉevent_timestamp*created_timestampZdata/engineered_train.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_train_sourceªaircraft_engine_pm’Ú¤÷ÓØÇâ"Ú¤÷ÓÀçÈ’bÇevent_timestamp*created_timestampZdata/engineered_test.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_test_sourceªaircraft_engine_pm’Ú¤÷Ó ƒñ"Ú¤÷Óø×Õ’Š2
-
-aircraft_engine_pm
-‡®öÓ°Êâ|‡®öÓ°Êâ|’×0
-¦
-engine_raw_sensors_trainaircraft_engine_pm"feature_view*³
-’
+¨ûèÕğË«£¶ûèÕèšö“
+´õ¸¿€¯¡Ë©ûèÕ02Í
+“
 engine_raw_sensors_trainaircraft_engine_pmengine"	
 cycle"
 setting1"
@@ -437,77 +382,33 @@ eD:\Aircraft-Engine-upd\Aircraft-Engine-Predictive-Maintenance_-main\feature_rep
 s18"
 s19"
 s20"
-s21*
-splittrain*
-stagedata_validation2€†°–:«event_timestamp*created_timestampZdata/engine_train.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_train_source’‡®öÓÃİ{"‡®öÓàğñî@b
-id’latest
-‡®öÓ¨Ø›ï‡®öÓ¨Ø›ï2‡®öÓÈ¨ßïB$8fc30cb0-a1e8-44d5-90c5-fbf8018c83cc
-œ
-engine_raw_sensors_valaircraft_engine_pm"feature_view*«
-Š
-engine_raw_sensors_valaircraft_engine_pmengine"	
-cycle"
-setting1"
-setting2"
-setting3"
-s1"
-s2"
-s3"
-s4"
-s5"
-s6"
-s7"
-s8"
-s9"
-s10"
-s11"
-s12"
-s13"
-s14"
-s15"
-s16"
-s17"
-s18"
-s19"
-s20"
-s21*
-splitval*
-stagedata_validation2€†°–:§event_timestamp*created_timestampZdata/engine_val.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_val_source’‡®öÓ€Úå{"‡®öÓÈ¨âî@b
-id’latest
-‡®öÓ…ãï‡®öÓ…ãï2‡®öÓØŒ¬ğB$350abd4c-8db2-4736-8593-20119bf06bf8
-¡
-engine_raw_sensors_testaircraft_engine_pm"feature_view*¯
-
-engine_raw_sensors_testaircraft_engine_pmengine"	
-cycle"
-setting1"
-setting2"
-setting3"
-s1"
-s2"
-s3"
-s4"
-s5"
-s6"
-s7"
-s8"
-s9"
-s10"
-s11"
-s12"
-s13"
-s14"
-s15"
-s16"
-s17"
-s18"
-s19"
-s20"
-s21*
-splittest*
-stagedata_validation2€†°–:©event_timestamp*created_timestampZdata/engine_test.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_test_source’‡®öÓĞÔì{"‡®öÓğ—ÿî@b
-id’latest
-‡®öÓÀˆ°ğ‡®öÓÀˆ°ğ2‡®öÓ¸ªëğB$7be1fe49-45c5-43ee-ae16-3bf6a195d77c
+s21*
+stagedata_validation*
+splittrain2€†°–:¬event_timestamp*created_timestampZdata/engine_train.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_train_source’§ûèÕˆıè¬"¨ûèÕ˜úË›@b
+id’latest5
+¨ûèÕç§·ûèÕ°÷ñr
+´õ¸¿€¯¡Ë©ûèÕ0R’
+„
+,feast.infra.online_stores.sqlite.SqliteTable"Ó
+œC:\Users\arjun\OneDrive\Pictures\Aircraft-Engine-Predictive-Maintenance_-main\Aircraft-Engine-Predictive-Maintenance_-main\feature_repo\data\online_store.db2aircraft_engine_pm_engine_engineered_features_test
+…
+,feast.infra.online_stores.sqlite.SqliteTable"Ô
+œC:\Users\arjun\OneDrive\Pictures\Aircraft-Engine-Predictive-Maintenance_-main\Aircraft-Engine-Predictive-Maintenance_-main\feature_repo\data\online_store.db3aircraft_engine_pm_engine_engineered_features_train
+ƒ
+,feast.infra.online_stores.sqlite.SqliteTable"Ò
+œC:\Users\arjun\OneDrive\Pictures\Aircraft-Engine-Predictive-Maintenance_-main\Aircraft-Engine-Predictive-Maintenance_-main\feature_repo\data\online_store.db1aircraft_engine_pm_engine_engineered_features_val
+ü
+,feast.infra.online_stores.sqlite.SqliteTable"Ë
+œC:\Users\arjun\OneDrive\Pictures\Aircraft-Engine-Predictive-Maintenance_-main\Aircraft-Engine-Predictive-Maintenance_-main\feature_repo\data\online_store.db*aircraft_engine_pm_engine_raw_sensors_test
+ı
+,feast.infra.online_stores.sqlite.SqliteTable"Ì
+œC:\Users\arjun\OneDrive\Pictures\Aircraft-Engine-Predictive-Maintenance_-main\Aircraft-Engine-Predictive-Maintenance_-main\feature_repo\data\online_store.db+aircraft_engine_pm_engine_raw_sensors_train
+û
+,feast.infra.online_stores.sqlite.SqliteTable"Ê
+œC:\Users\arjun\OneDrive\Pictures\Aircraft-Engine-Predictive-Maintenance_-main\Aircraft-Engine-Predictive-Maintenance_-main\feature_repo\data\online_store.db)aircraft_engine_pm_engine_raw_sensors_valbÁevent_timestamp*created_timestampZdata/engine_train.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_train_sourceªaircraft_engine_pm’§ûèÕˆıè¬"¨ûèÕ˜úË›bÅevent_timestamp*created_timestampZdata/engineered_val.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_val_sourceªaircraft_engine_pm’§ûèÕ¨¨Ù°"¨ûèÕ˜úË›b½event_timestamp*created_timestampZdata/engine_val.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_val_sourceªaircraft_engine_pm’§ûèÕˆıè¬"¨ûèÕ˜úË›b¿event_timestamp*created_timestampZdata/engine_test.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_test_sourceªaircraft_engine_pm’§ûèÕˆıè¬"¨ûèÕ˜úË›bÉevent_timestamp*created_timestampZdata/engineered_train.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_train_sourceªaircraft_engine_pm’§ûèÕ¨¨Ù°"¨ûèÕ˜úË›bÇevent_timestamp*created_timestampZdata/engineered_test.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_test_sourceªaircraft_engine_pm’§ûèÕ¨¨Ù°"¨ûèÕ˜úË›Š2
+
+aircraft_engine_pm
+¨ûèÕÈîè¨ûèÕÈîè’Ú0
 ô
 
 engine_engineered_features_valaircraft_engine_pm"feature_view*û	
@@ -599,11 +500,172 @@ s2_mean_20"
 
 s3_mean_20"
 	s3_std_20"
-RUL*
-splitval*
-stagefeature_engineering2€†°–:°event_timestamp*created_timestampZdata/engineered_val.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_val_source’Ú¤÷ÓÀ·ê"Ú¤÷ÓèªÍ‘@b
+RUL*
+stagefeature_engineering*
+splitval2€†°–:°event_timestamp*created_timestampZdata/engineered_val.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_val_source’§ûèÕ¨¨Ù°"¨ûèÕ˜úË›@b
 id’latest
-Ú¤÷Óˆÿâ’Ú¤÷Óˆÿâ’2Ú¤÷Ó˜ëÖ“B$9e8d1031-99a2-4b3b-8861-ac2ce25da37e
+¨ûèÕàÒîŸ¨ûèÕàÒîŸ2¨ûèÕàÒîŸB$70aa7118-6cbe-4cb3-978e-add1946c1cb8
+
+engine_raw_sensors_valaircraft_engine_pm"feature_view*¬
+‹
+engine_raw_sensors_valaircraft_engine_pmengine"	
+cycle"
+setting1"
+setting2"
+setting3"
+s1"
+s2"
+s3"
+s4"
+s5"
+s6"
+s7"
+s8"
+s9"
+s10"
+s11"
+s12"
+s13"
+s14"
+s15"
+s16"
+s17"
+s18"
+s19"
+s20"
+s21*
+stagedata_validation*
+splitval2€†°–:¨event_timestamp*created_timestampZdata/engine_val.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_val_source’§ûèÕˆıè¬"¨ûèÕ˜úË›@b
+id’latest
+¨ûèÕàÒîŸ¨ûèÕàÒîŸ2¨ûèÕğË«£B$16601cdd-df2f-4773-aac1-b6f26d060cd8
+ğ
+
+engine_engineered_features_testaircraft_engine_pm"feature_view*ö	
+Õ	
+engine_engineered_features_testaircraft_engine_pmengine"	
+cycle"
+setting1"
+setting2"
+s2"
+s3"
+s4"
+s5"
+s6"
+s7"
+s8"
+s9"
+s11"
+s12"
+s13"
+s15"
+s16"
+s17"
+s20"
+s21"
+
+s11_mean_5"
+	s11_std_5"
+
+s12_mean_5"
+	s12_std_5"
+	s4_mean_5"
+s4_std_5"
+	s7_mean_5"
+s7_std_5"
+
+s15_mean_5"
+	s15_std_5"
+
+s21_mean_5"
+	s21_std_5"
+
+s20_mean_5"
+	s20_std_5"
+
+s13_mean_5"
+	s13_std_5"
+	s8_mean_5"
+s8_std_5"
+
+s17_mean_5"
+	s17_std_5"
+	s2_mean_5"
+s2_std_5"
+	s3_mean_5"
+s3_std_5"
+s11_mean_20"
+
+s11_std_20"
+s12_mean_20"
+
+s12_std_20"
+
+s4_mean_20"
+	s4_std_20"
+
+s7_mean_20"
+	s7_std_20"
+s15_mean_20"
+
+s15_std_20"
+s21_mean_20"
+
+s21_std_20"
+s20_mean_20"
+
+s20_std_20"
+s13_mean_20"
+
+s13_std_20"
+
+s8_mean_20"
+	s8_std_20"
+s17_mean_20"
+
+s17_std_20"
+
+s2_mean_20"
+	s2_std_20"
+
+s3_mean_20"
+	s3_std_20*
+stagefeature_engineering*
+splittest2€†°–:²event_timestamp*created_timestampZdata/engineered_test.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_test_source’§ûèÕ¨¨Ù°"¨ûèÕ˜úË›@b
+id’latest
+¨ûèÕğË«£¨ûèÕğË«£2¨ûèÕğË«£B$a3fbc688-3f7a-4617-85dc-402426b573b2
+¢
+engine_raw_sensors_testaircraft_engine_pm"feature_view*°
+
+engine_raw_sensors_testaircraft_engine_pmengine"	
+cycle"
+setting1"
+setting2"
+setting3"
+s1"
+s2"
+s3"
+s4"
+s5"
+s6"
+s7"
+s8"
+s9"
+s10"
+s11"
+s12"
+s13"
+s14"
+s15"
+s16"
+s17"
+s18"
+s19"
+s20"
+s21*
+stagedata_validation*
+splittest2€†°–:ªevent_timestamp*created_timestampZdata/engine_test.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_test_source’§ûèÕˆıè¬"¨ûèÕ˜úË›@b
+id’latest
+¨ûèÕğË«£¨ûèÕğË«£2¨ûèÕğË«£B$7e4a66a9-c5f7-4799-b1da-9851f2c34206
 ş
 
  engine_engineered_features_trainaircraft_engine_pm"feature_view*ƒ
@@ -696,19 +758,20 @@ s2_mean_20"
 
 s3_mean_20"
 	s3_std_20"
-RUL*
-splittrain*
-stagefeature_engineering2€†°–:´event_timestamp*created_timestampZdata/engineered_train.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_train_source’Ú¤÷ÓØÇâ"Ú¤÷ÓÀçÈ’@b
+RUL*
+stagefeature_engineering*
+splittrain2€†°–:´event_timestamp*created_timestampZdata/engineered_train.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_train_source’§ûèÕ¨¨Ù°"¨ûèÕ˜úË›@b
 id’latest
-Ú¤÷Óğ˜Ú“Ú¤÷Óğ˜Ú“2Ú¤÷Ó¸´Æ”B$86a573ec-f4d6-43a1-be45-42723c888063
-ğ
-
-engine_engineered_features_testaircraft_engine_pm"feature_view*ö	
-Õ	
-engine_engineered_features_testaircraft_engine_pmengine"	
+¨ûèÕğË«£¨ûèÕğË«£2¨ûèÕç§B$f6ecb120-6f8b-44ed-a7d8-bba02ff589f4
+§
+engine_raw_sensors_trainaircraft_engine_pm"feature_view*´
+“
+engine_raw_sensors_trainaircraft_engine_pmengine"	
 cycle"
 setting1"
-setting2"
+setting2"
+setting3"
+s1"
 s2"
 s3"
 s4"
@@ -717,82 +780,19 @@ s3_mean_20"
 s7"
 s8"
 s9"
+s10"
 s11"
 s12"
 s13"
+s14"
 s15"
 s16"
-s17"
+s17"
+s18"
+s19"
 s20"
-s21"
-
-s11_mean_5"
-	s11_std_5"
-
-s12_mean_5"
-	s12_std_5"
-	s4_mean_5"
-s4_std_5"
-	s7_mean_5"
-s7_std_5"
-
-s15_mean_5"
-	s15_std_5"
-
-s21_mean_5"
-	s21_std_5"
-
-s20_mean_5"
-	s20_std_5"
-
-s13_mean_5"
-	s13_std_5"
-	s8_mean_5"
-s8_std_5"
-
-s17_mean_5"
-	s17_std_5"
-	s2_mean_5"
-s2_std_5"
-	s3_mean_5"
-s3_std_5"
-s11_mean_20"
-
-s11_std_20"
-s12_mean_20"
-
-s12_std_20"
-
-s4_mean_20"
-	s4_std_20"
-
-s7_mean_20"
-	s7_std_20"
-s15_mean_20"
-
-s15_std_20"
-s21_mean_20"
-
-s21_std_20"
-s20_mean_20"
-
-s20_std_20"
-s13_mean_20"
-
-s13_std_20"
-
-s8_mean_20"
-	s8_std_20"
-s17_mean_20"
-
-s17_std_20"
-
-s2_mean_20"
-	s2_std_20"
-
-s3_mean_20"
-	s3_std_20*
-splittest*
-stagefeature_engineering2€†°–:²event_timestamp*created_timestampZdata/engineered_test.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engineered_test_source’Ú¤÷Ó ƒñ"Ú¤÷Óø×Õ’@b
+s21*
+stagedata_validation*
+splittrain2€†°–:¬event_timestamp*created_timestampZdata/engine_train.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢engine_train_source’§ûèÕˆıè¬"¨ûèÕ˜úË›@b
 id’latest
-Ú¤÷Ó˜ŒÉ”Ú¤÷Ó˜ŒÉ”2Ú¤÷Ó é´•B$5c64fbd8-7cc5-48f4-acc8-6f4e4a876f49
+¨ûèÕç§¨ûèÕç§2¨ûèÕç§B$06a32870-b1db-4854-a36f-b3694dd6ad13
