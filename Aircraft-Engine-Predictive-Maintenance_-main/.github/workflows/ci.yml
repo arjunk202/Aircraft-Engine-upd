@@ -1,0 +1,44 @@
+# ---------------------------------------------------------------------------
+#  Continuous Integration
+#  Runs on every push and pull request. Installs dependencies, lints the code,
+#  and runs the unit + smoke tests. A red run blocks the change from being
+#  merged, so broken code never reaches the main branch.
+# ---------------------------------------------------------------------------
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Lint and test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest ruff
+
+      - name: Lint with ruff
+        # Style/quality check. --output-format=github annotates the PR diff.
+        run: ruff check . --output-format=github
+        continue-on-error: true   # report issues without failing the build yet
+
+      - name: Run tests
+        # Unit tests for the risk-categorisation logic plus import/schema smoke
+        # tests. These need no model or network, so they run fast in CI.
+        run: pytest tests/ -q
