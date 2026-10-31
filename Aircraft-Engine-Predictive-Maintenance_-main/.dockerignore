@@ -1,0 +1,13 @@
+# Keep the build context small and the image clean.
+__pycache__/
+*.pyc
+.git/
+.github/
+tests/
+*.ipynb
+Data_Report_Artifacts/
+Materials/
+MLOPS_PIPELINE/
+monitoring/
+predictions.db
+*.md
