@@ -1,11 +1,10 @@
-name: CD — Containerize & Verify
+name: CD - Containerize & Verify
 
 on:
   workflow_run:
-        workflows: ["CI — Build & Test"]
-    types: [ completed ]
-    branches: [ main ]
-
+    workflows: ["CI - Build & Test"]
+    types: [completed]
+    branches: [main]
 jobs:
   build-and-verify:
     name: Build and smoke-test the image
