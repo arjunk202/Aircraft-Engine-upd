@@ -2,7 +2,7 @@ name: CD — Containerize & Verify
 
 on:
   workflow_run:
-    workflows: [ "CI" ]
+        workflows: ["CI — Build & Test"]
     types: [ completed ]
     branches: [ main ]
 
