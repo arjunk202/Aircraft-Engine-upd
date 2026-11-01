@@ -25,11 +25,24 @@ jobs:
           load: true
           tags: aircraft-rul-api:ci
       - name: Start the container
+        run: docker run -d --name rul_api -p 8080:8080 aircraft-rul-api:ci
+      - name: Wait for the service to be healthy
+        # The service loads the champion model from MLflow at startup, which can
+        # take a while. Poll /health for up to ~90s before giving up, and show
+        # the container logs if it never comes up (helps diagnose failures).
         run: |
-          docker run -d --name rul_api -p 8080:8080 aircraft-rul-api:ci
-          sleep 20
-      - name: Verify the health endpoint
-        run: curl --fail --retry 5 --retry-delay 3 http://localhost:8080/health
+          for i in $(seq 1 30); do
+            if curl -fs http://localhost:8080/health > /dev/null; then
+              echo "Service is healthy:"
+              curl -s http://localhost:8080/health
+              exit 0
+            fi
+            echo "Attempt $i: not ready yet, waiting 3s..."
+            sleep 3
+          done
+          echo "Service did not become healthy in time. Container logs:"
+          docker logs rul_api
+          exit 1
       - name: Stop the container
         if: always()
         run: docker rm -f rul_api || true
