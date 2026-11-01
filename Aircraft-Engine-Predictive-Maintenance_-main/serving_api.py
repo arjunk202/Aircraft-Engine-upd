@@ -221,31 +221,54 @@ def _load_champion() -> None:
     client = MlflowClient()
     mv = client.get_model_version_by_alias(REGISTERED_MODEL_NAME, MODEL_ALIAS)
 
+    # Preferred: load via the registry alias. This works when the artifact paths
+    # recorded at training time are valid on this machine.
     model_uri = f"models:/{REGISTERED_MODEL_NAME}@{MODEL_ALIAS}"
-    state.model = mlflow.pyfunc.load_model(model_uri)
+    try:
+        state.model = mlflow.pyfunc.load_model(model_uri)
+    except Exception as exc:  # noqa: BLE001
+        # Fallback: the MLmodel file can carry an absolute path baked in at
+        # training time (e.g. a different machine), which fails inside a
+        # container. Resolve the model's local artifacts directory under
+        # mlruns/ instead, which is valid regardless of where the store was created.
+        logger.warning(
+            "Alias load failed (%s); falling back to local artifact path.", exc
+        )
+        import glob
+        model_id = mv.source.split("/")[-1]
+        matches = glob.glob(
+            str(ROOT_DIR / "mlruns" / "**" / "models" / model_id / "artifacts"),
+            recursive=True,
+        )
+        if not matches:
+            raise RuntimeError(
+                f"Could not locate local artifacts for model {model_id} under mlruns/"
+            ) from exc
+        state.model = mlflow.pyfunc.load_model(matches[0])
+
     state.version = mv.version
     state.run_id = mv.run_id
 
     signature = state.model.metadata.get_input_schema()
     if signature is not None:
         state.feature_names = [c.name for c in signature.inputs]
-        # The API accepts every feature as JSON float, but the model's logged
-        # signature can declare some columns as int64 (e.g. `cycle`, or any
-        # sensor whose head(3) input_example happened to be whole numbers) —
-        # mlflow's schema enforcement rejects a float64->int64 downcast
-        # outright, so each column must be cast to its declared dtype before
-        # predict() rather than left as whatever pandas inferred from JSON.
         state.feature_dtypes = {c.name: c.type.to_pandas() for c in signature.inputs}
     else:
         state.feature_names = None
         state.feature_dtypes = None
 
     MODEL_INFO.labels(
-        model_name=REGISTERED_MODEL_NAME, model_version=str(mv.version), alias=MODEL_ALIAS, run_id=mv.run_id
+        model_name=REGISTERED_MODEL_NAME,
+        model_version=str(mv.version),
+        alias=MODEL_ALIAS,
+        run_id=mv.run_id,
     ).set(1)
     logger.info(
         "Loaded champion model: %s v%s (run_id=%s, %d expected features)",
-        REGISTERED_MODEL_NAME, mv.version, mv.run_id, len(state.feature_names or []),
+        REGISTERED_MODEL_NAME,
+        mv.version,
+        mv.run_id,
+        len(state.feature_names or []),
     )
 
 
